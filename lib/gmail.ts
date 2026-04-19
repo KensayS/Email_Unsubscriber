@@ -33,7 +33,7 @@ export async function fetchSenders(
   const gmail = google.gmail({ version: 'v1', auth })
 
   const afterStr = afterDate.toISOString().slice(0, 10).replace(/-/g, '/')
-  const query = `category:promotions after:${afterStr}`
+  const query = `list:* after:${afterStr}`
 
   const messageIds: string[] = []
   let pageToken: string | undefined
