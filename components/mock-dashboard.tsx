@@ -38,10 +38,7 @@ export function MockDashboard() {
           </div>
           <div className="flex items-center gap-1 rounded-md border bg-muted/50 p-1">
             <div className="h-8 px-2 rounded text-xs font-medium bg-primary text-primary-foreground flex items-center justify-center">
-              🏗️
-            </div>
-            <div className="h-8 px-2 rounded text-xs font-medium text-muted-foreground flex items-center justify-center">
-              📋
+              ▦▦▦
             </div>
             <div className="h-8 px-2 rounded text-xs font-medium text-muted-foreground flex items-center justify-center">
               ☰

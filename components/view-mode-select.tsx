@@ -2,12 +2,11 @@
 
 import { ViewMode } from '@/types'
 import { Button } from '@/components/ui/button'
-import { LayoutGrid, List, AlignLeft } from 'lucide-react'
+import { LayoutGrid, List } from 'lucide-react'
 
 const MODES: { value: ViewMode; label: string; icon: React.ReactNode }[] = [
-  { value: 'cards', label: 'Cards', icon: <LayoutGrid size={16} /> },
-  { value: 'list', label: 'List', icon: <AlignLeft size={16} /> },
-  { value: 'compact', label: 'Compact', icon: <List size={16} /> },
+  { value: 'grid', label: 'Grid', icon: <LayoutGrid size={16} /> },
+  { value: 'list', label: 'List', icon: <List size={16} /> },
 ]
 
 interface Props {

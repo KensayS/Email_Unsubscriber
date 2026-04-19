@@ -28,4 +28,4 @@ export type StreamEvent =
 
 export type Timeframe = 1 | 3
 
-export type ViewMode = 'cards' | 'list' | 'compact'
+export type ViewMode = 'grid' | 'list'

@@ -5,14 +5,13 @@ import { signOut } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { TimeframeSelect } from '@/components/timeframe-select'
 import { ViewModeSelect } from '@/components/view-mode-select'
-import { SenderCard } from '@/components/sender-card'
-import { SenderList } from '@/components/sender-list'
-import { SenderTable } from '@/components/sender-table'
+import { SenderGrid } from '@/components/sender-grid'
+import { SenderListView } from '@/components/sender-list-view'
 import { SenderInfo, StreamEvent, Timeframe, ViewMode, UnsubscribeResult } from '@/types'
 
 export function DashboardClient() {
   const [timeframe, setTimeframe] = useState<Timeframe>(1)
-  const [viewMode, setViewMode] = useState<ViewMode>('compact')
+  const [viewMode, setViewMode] = useState<ViewMode>('grid')
   const [scanning, setScanning] = useState(false)
   const [senders, setSenders] = useState<SenderInfo[]>([])
   const [done, setDone] = useState(false)
@@ -140,25 +139,14 @@ export function DashboardClient() {
 
         {senders.length > 0 && (
           <>
-            {viewMode === 'cards' && (
-              <div className="space-y-3">
-                {senders.map((sender) => (
-                  <SenderCard
-                    key={sender.email}
-                    sender={sender}
-                    onUnsubscribe={handleUnsubscribe}
-                  />
-                ))}
-              </div>
-            )}
-            {viewMode === 'list' && (
-              <SenderList
+            {viewMode === 'grid' && (
+              <SenderGrid
                 senders={senders}
                 onUnsubscribe={handleUnsubscribe}
               />
             )}
-            {viewMode === 'compact' && (
-              <SenderTable
+            {viewMode === 'list' && (
+              <SenderListView
                 senders={senders}
                 onUnsubscribe={handleUnsubscribe}
               />
