@@ -6,15 +6,13 @@ const FAKE_SENDERS = [
   { name: 'Nike', email: 'news@nike.com', count: 87, summary: 'Weekly athletic gear sales and new product launches.' },
   { name: 'Medium Daily Digest', email: 'noreply@medium.com', count: 64, summary: 'Personalized daily article recommendations based on your reading history.' },
   { name: 'GitHub', email: 'noreply@github.com', count: 51, summary: 'Repository activity digests, security alerts, and team notifications.' },
-  { name: 'Airbnb', email: 'no-reply@airbnb.com', count: 38, summary: 'Travel deal recommendations and booking reminders.' },
-  { name: 'Duolingo', email: 'hello@duolingo.com', count: 30, summary: 'Daily streak reminders and language learning progress updates.' },
 ]
 
 export function MockDashboard() {
   return (
-    <div className="w-full max-w-2xl mx-auto rounded-xl border bg-background shadow-lg overflow-hidden">
+    <div className="w-full rounded-xl border bg-background shadow-lg overflow-hidden">
       {/* Header */}
-      <div className="flex items-center gap-2 border-b px-4 py-3 bg-muted/30 justify-between">
+      <div className="flex items-center gap-2 border-b px-4 py-3 bg-muted/30">
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-full bg-red-400" />
           <div className="h-3 w-3 rounded-full bg-yellow-400" />
@@ -23,69 +21,115 @@ export function MockDashboard() {
         <div className="text-center text-xs text-muted-foreground font-mono flex-1">
           unsubscriber.app/dashboard
         </div>
-        <div className="text-right"></div>
       </div>
-      {/* App chrome */}
-      <div className="p-4 space-y-3">
-        <div className="flex items-center gap-2 mb-4 flex-wrap justify-between">
+
+      {/* App content */}
+      <div className="p-6 space-y-4">
+        {/* Toolbar */}
+        <div className="flex items-center gap-2 justify-between flex-wrap">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-32 rounded-md border bg-muted text-xs flex items-center px-3 text-muted-foreground">
+            <div className="h-8 w-32 rounded-md border bg-muted text-xs flex items-center px-3 text-muted-foreground font-medium">
               1 month ▾
             </div>
             <div className="h-8 w-20 rounded-md bg-primary text-primary-foreground text-xs flex items-center justify-center font-medium">
               Scan
             </div>
           </div>
-          <div className="flex items-center gap-1 rounded-md border bg-muted/50 p-1">
-            <div className="h-8 px-2 rounded text-xs font-medium bg-primary text-primary-foreground flex items-center justify-center">
-              ▦▦▦
+
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 rounded-md border bg-muted/50 p-1">
+              <div className="h-8 px-2 rounded text-xs font-medium bg-primary text-primary-foreground flex items-center justify-center">
+                ▦▦▦
+              </div>
+              <div className="h-8 px-2 rounded text-xs font-medium text-muted-foreground flex items-center justify-center">
+                ☰
+              </div>
             </div>
-            <div className="h-8 px-2 rounded text-xs font-medium text-muted-foreground flex items-center justify-center">
-              ☰
-            </div>
+            <button className="text-xl hover:opacity-70">⚠️</button>
           </div>
-          <span className="text-xs text-muted-foreground">
-            {FAKE_SENDERS.reduce((s, x) => s + x.count, 0)} found
-          </span>
         </div>
 
-        {/* Session warning */}
-        <div className="rounded-lg bg-amber-50 border border-amber-200 p-2.5 text-xs text-amber-900">
-          <strong>Note:</strong> Unsubscribed lists still appear here since we don't store data.
+        {/* Grid View */}
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-muted-foreground">Grid View</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {FAKE_SENDERS.map((sender) => (
+              <div
+                key={sender.email}
+                className="rounded-lg border bg-card hover:shadow-md transition-shadow overflow-hidden flex flex-col"
+              >
+                <div className="p-4 flex-1 flex flex-col gap-3">
+                  <div>
+                    <h3 className="font-semibold text-sm line-clamp-1">{sender.name}</h3>
+                    <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{sender.email}</p>
+                  </div>
+                  <p className="text-xs text-muted-foreground line-clamp-2">{sender.summary}</p>
+                  <div className="flex items-center gap-2 mt-auto">
+                    <Badge variant="secondary" className="text-xs">
+                      {sender.count}
+                    </Badge>
+                  </div>
+                </div>
+                <div className="px-4 pb-4 pt-0">
+                  <Button
+                    size="sm"
+                    variant="default"
+                    className="w-full text-xs h-8 pointer-events-none"
+                  >
+                    Unsubscribe
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Table */}
-        <div className="rounded-lg border bg-card overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs">
-              <thead className="border-b bg-muted/50">
-                <tr>
-                  <th className="text-left px-3 py-2 font-semibold">Sender</th>
-                  <th className="text-left px-3 py-2 font-semibold">Email</th>
-                  <th className="text-right px-3 py-2 font-semibold w-16">Count</th>
-                  <th className="text-right px-3 py-2 font-semibold w-28">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {FAKE_SENDERS.map((sender) => (
-                  <tr key={sender.email} className="border-b hover:bg-muted/30">
-                    <td className="px-3 py-2">
-                      <div className="font-medium truncate">{sender.name}</div>
-                      <div className="text-xs text-muted-foreground truncate">{sender.summary}</div>
-                    </td>
-                    <td className="px-3 py-2 text-muted-foreground truncate text-xs">{sender.email}</td>
-                    <td className="px-3 py-2 text-right">
-                      <Badge variant="secondary" className="text-xs">{sender.count}</Badge>
-                    </td>
-                    <td className="px-3 py-2 text-right">
-                      <Button size="sm" variant="default" className="text-xs h-7 px-2 pointer-events-none">
-                        Unsubscribe
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {/* List View */}
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-muted-foreground">List View</p>
+          <div className="rounded-lg border bg-card overflow-hidden">
+            <div className="divide-y">
+              <div className="hidden md:grid grid-cols-12 gap-2 bg-muted/40 px-4 py-3 font-semibold text-sm h-12 items-center text-xs">
+                <div className="col-span-4">Name</div>
+                <div className="col-span-4">Email</div>
+                <div className="col-span-2 text-right">Count</div>
+                <div className="col-span-2 text-right">Action</div>
+              </div>
+
+              {FAKE_SENDERS.map((sender) => (
+                <div
+                  key={sender.email}
+                  className="grid grid-cols-12 gap-2 px-4 py-3 hover:bg-muted/40 transition-colors items-center text-xs md:h-14"
+                >
+                  <div className="col-span-12 md:col-span-4 min-w-0">
+                    <div className="font-medium truncate">{sender.name}</div>
+                    <button className="text-blue-600 hover:underline truncate text-left text-xs">
+                      See details
+                    </button>
+                  </div>
+
+                  <div className="hidden md:block md:col-span-4 min-w-0">
+                    <div className="text-muted-foreground truncate">{sender.email}</div>
+                  </div>
+
+                  <div className="col-span-3 md:col-span-2 text-right">
+                    <Badge variant="secondary" className="text-xs">
+                      {sender.count}
+                    </Badge>
+                  </div>
+
+                  <div className="col-span-9 md:col-span-2 text-right">
+                    <Button
+                      size="sm"
+                      variant="default"
+                      className="text-xs h-8 w-full md:w-auto pointer-events-none"
+                    >
+                      Unsubscribe
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
