@@ -13,28 +13,42 @@ const FAKE_SENDERS = [
 export function MockDashboard() {
   return (
     <div className="w-full max-w-2xl mx-auto rounded-xl border bg-background shadow-lg overflow-hidden">
-      {/* Toolbar */}
-      <div className="flex items-center gap-3 border-b px-4 py-3 bg-muted/30">
+      {/* Header */}
+      <div className="flex items-center gap-2 border-b px-4 py-3 bg-muted/30 justify-between">
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-full bg-red-400" />
           <div className="h-3 w-3 rounded-full bg-yellow-400" />
           <div className="h-3 w-3 rounded-full bg-green-400" />
         </div>
-        <div className="flex-1 text-center text-xs text-muted-foreground font-mono">
+        <div className="text-center text-xs text-muted-foreground font-mono flex-1">
           unsubscriber.app/dashboard
         </div>
+        <div className="text-right"></div>
       </div>
       {/* App chrome */}
       <div className="p-4 space-y-3">
-        <div className="flex items-center gap-2 mb-4">
-          <div className="h-8 w-32 rounded-md border bg-muted animate-none text-xs flex items-center px-3 text-muted-foreground">
-            1 month ▾
+        <div className="flex items-center gap-2 mb-4 flex-wrap justify-between">
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-32 rounded-md border bg-muted text-xs flex items-center px-3 text-muted-foreground">
+              1 month ▾
+            </div>
+            <div className="h-8 w-20 rounded-md bg-primary text-primary-foreground text-xs flex items-center justify-center font-medium">
+              Scan
+            </div>
           </div>
-          <div className="h-8 w-20 rounded-md bg-primary text-primary-foreground text-xs flex items-center justify-center font-medium">
-            Scan
+          <div className="flex items-center gap-1 rounded-md border bg-muted/50 p-1">
+            <div className="h-8 px-2 rounded text-xs font-medium bg-primary text-primary-foreground flex items-center justify-center">
+              🏗️
+            </div>
+            <div className="h-8 px-2 rounded text-xs font-medium text-muted-foreground flex items-center justify-center">
+              📋
+            </div>
+            <div className="h-8 px-2 rounded text-xs font-medium text-muted-foreground flex items-center justify-center">
+              ☰
+            </div>
           </div>
-          <span className="text-xs text-muted-foreground ml-auto">
-            {FAKE_SENDERS.reduce((s, x) => s + x.count, 0)} emails found
+          <span className="text-xs text-muted-foreground">
+            {FAKE_SENDERS.reduce((s, x) => s + x.count, 0)} found
           </span>
         </div>
 

@@ -26,4 +26,6 @@ export type StreamEvent =
   | { type: 'done' }
   | { type: 'error'; message: string }
 
-export type Timeframe = 1 | 3 | 6 | 12 | 24
+export type Timeframe = 1 | 3
+
+export type ViewMode = 'cards' | 'list' | 'compact'

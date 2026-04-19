@@ -4,11 +4,15 @@ import { useState, useCallback } from 'react'
 import { signOut } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { TimeframeSelect } from '@/components/timeframe-select'
+import { ViewModeSelect } from '@/components/view-mode-select'
+import { SenderCard } from '@/components/sender-card'
+import { SenderList } from '@/components/sender-list'
 import { SenderTable } from '@/components/sender-table'
-import { SenderInfo, StreamEvent, Timeframe, UnsubscribeResult } from '@/types'
+import { SenderInfo, StreamEvent, Timeframe, ViewMode, UnsubscribeResult } from '@/types'
 
 export function DashboardClient() {
   const [timeframe, setTimeframe] = useState<Timeframe>(1)
+  const [viewMode, setViewMode] = useState<ViewMode>('compact')
   const [scanning, setScanning] = useState(false)
   const [senders, setSenders] = useState<SenderInfo[]>([])
   const [done, setDone] = useState(false)
@@ -82,15 +86,20 @@ export function DashboardClient() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b px-4 py-3 flex items-center gap-3">
-        <h1 className="font-bold text-lg flex-1">Email Unsubscriber</h1>
-        <TimeframeSelect value={timeframe} onChange={setTimeframe} disabled={scanning} />
-        <Button onClick={handleScan} disabled={scanning} size="sm">
-          {scanning ? 'Scanning…' : 'Scan'}
-        </Button>
-        <Button variant="ghost" size="sm" onClick={() => signOut({ callbackUrl: '/' })}>
-          Sign out
-        </Button>
+      <header className="border-b px-4 py-3 flex items-center gap-3 justify-between flex-wrap">
+        <h1 className="font-bold text-lg">Email Unsubscriber</h1>
+        <div className="flex items-center gap-2 flex-wrap">
+          <TimeframeSelect value={timeframe} onChange={setTimeframe} disabled={scanning} />
+          <Button onClick={handleScan} disabled={scanning} size="sm">
+            {scanning ? 'Scanning…' : 'Scan'}
+          </Button>
+        </div>
+        <div className="flex items-center gap-2">
+          {senders.length > 0 && <ViewModeSelect value={viewMode} onChange={setViewMode} disabled={scanning} />}
+          <Button variant="ghost" size="sm" onClick={() => signOut({ callbackUrl: '/' })}>
+            Sign out
+          </Button>
+        </div>
       </header>
 
       {/* Content */}
@@ -130,10 +139,31 @@ export function DashboardClient() {
         )}
 
         {senders.length > 0 && (
-          <SenderTable
-            senders={senders}
-            onUnsubscribe={handleUnsubscribe}
-          />
+          <>
+            {viewMode === 'cards' && (
+              <div className="space-y-3">
+                {senders.map((sender) => (
+                  <SenderCard
+                    key={sender.email}
+                    sender={sender}
+                    onUnsubscribe={handleUnsubscribe}
+                  />
+                ))}
+              </div>
+            )}
+            {viewMode === 'list' && (
+              <SenderList
+                senders={senders}
+                onUnsubscribe={handleUnsubscribe}
+              />
+            )}
+            {viewMode === 'compact' && (
+              <SenderTable
+                senders={senders}
+                onUnsubscribe={handleUnsubscribe}
+              />
+            )}
+          </>
         )}
       </main>
     </div>

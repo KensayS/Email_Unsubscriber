@@ -12,9 +12,6 @@ import { Timeframe } from '@/types'
 const OPTIONS: { value: Timeframe; label: string }[] = [
   { value: 1, label: '1 month' },
   { value: 3, label: '3 months' },
-  { value: 6, label: '6 months' },
-  { value: 12, label: '1 year' },
-  { value: 24, label: '2 years' },
 ]
 
 interface Props {
