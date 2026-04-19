@@ -67,32 +67,18 @@ export function SenderListView({ senders, onUnsubscribe }: Props) {
               const status = statuses[sender.email] || 'idle'
               const isDisabled = status === 'loading' || status === 'unsubscribed' || status === 'not_found'
               const label = BUTTON_LABELS[status]
-              const initials = sender.name
-                .split(' ')
-                .map((n) => n[0])
-                .join('')
-                .toUpperCase()
-                .slice(0, 2)
 
               return (
                 <tr
                   key={sender.email}
-                  className="hover:bg-muted/40 transition-colors h-16"
+                  className="hover:bg-muted/40 transition-colors h-14"
                 >
-                  {/* Name with Avatar */}
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-10 h-10 rounded bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
-                        {initials}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="font-medium text-sm truncate">{sender.name}</div>
-                        <div className="text-xs text-muted-foreground truncate md:hidden">
-                          {sender.email}
-                        </div>
-                        <div className="text-xs text-muted-foreground truncate hidden md:hidden">
-                          {buildSubjectSnippet(sender.subjects, sender.email)}
-                        </div>
+                  {/* Name */}
+                  <td className="px-4 py-3 min-w-0">
+                    <div>
+                      <div className="font-medium text-sm truncate">{sender.name}</div>
+                      <div className="text-xs text-muted-foreground truncate">
+                        {buildSubjectSnippet(sender.subjects, sender.email) || sender.email}
                       </div>
                     </div>
                   </td>

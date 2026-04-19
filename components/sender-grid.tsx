@@ -51,33 +51,22 @@ export function SenderGrid({ senders, onUnsubscribe }: Props) {
   }
 
   return (
-    <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
       {senders.map((sender) => {
         const status = statuses[sender.email] || 'idle'
         const isDisabled = status === 'loading' || status === 'unsubscribed' || status === 'not_found'
         const label = BUTTON_LABELS[status]
-        const initials = sender.name
-          .split(' ')
-          .map((n) => n[0])
-          .join('')
-          .toUpperCase()
-          .slice(0, 2)
 
         return (
           <div
             key={sender.email}
-            className="rounded-lg border bg-card hover:shadow-md transition-shadow overflow-hidden flex flex-col group"
+            className="rounded-lg border bg-card hover:shadow-md transition-shadow overflow-hidden flex flex-col"
           >
-            {/* Thumbnail/Avatar */}
-            <div className="h-32 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-2xl font-bold">
-              {initials}
-            </div>
-
             {/* Content */}
             <div className="p-4 flex-1 flex flex-col gap-3">
               <div>
-                <h3 className="font-semibold text-base line-clamp-2 break-words">{sender.name}</h3>
-                <p className="text-xs text-muted-foreground mt-1">{sender.email}</p>
+                <h3 className="font-semibold text-sm line-clamp-1 break-words">{sender.name}</h3>
+                <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{sender.email}</p>
               </div>
 
               {buildSubjectSnippet(sender.subjects, sender.email) && (
@@ -88,13 +77,13 @@ export function SenderGrid({ senders, onUnsubscribe }: Props) {
 
               <div className="flex items-center gap-2 mt-auto">
                 <Badge variant="secondary" className="text-xs">
-                  {sender.count} emails
+                  {sender.count}
                 </Badge>
               </div>
             </div>
 
             {/* Action Button */}
-            <div className="px-4 pb-4">
+            <div className="px-4 pb-4 pt-0">
               <Button
                 size="sm"
                 variant={
@@ -104,7 +93,7 @@ export function SenderGrid({ senders, onUnsubscribe }: Props) {
                 }
                 disabled={isDisabled}
                 onClick={() => handleButtonClick(sender)}
-                className="w-full text-xs"
+                className="w-full text-xs h-8"
               >
                 {label}
               </Button>

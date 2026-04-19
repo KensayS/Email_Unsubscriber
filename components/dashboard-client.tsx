@@ -85,7 +85,7 @@ export function DashboardClient() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b px-4 py-3 flex items-center gap-3 justify-between flex-wrap">
+      <header className="border-b px-4 py-4 lg:px-8 flex items-center gap-3 justify-between flex-wrap">
         <h1 className="font-bold text-lg">Email Unsubscriber</h1>
         <div className="flex items-center gap-2 flex-wrap">
           <TimeframeSelect value={timeframe} onChange={setTimeframe} disabled={scanning} />
@@ -102,7 +102,7 @@ export function DashboardClient() {
       </header>
 
       {/* Content */}
-      <main className="max-w-2xl mx-auto px-4 py-6 space-y-3">
+      <main className="w-full px-4 py-6 space-y-3 lg:px-8">
         {/* Session persistence warning */}
         <div className="rounded-lg bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 p-3 text-sm text-amber-900 dark:text-amber-100">
           <strong>Note:</strong> This app uses no database. If you unsubscribe, the list will still appear across sessions. Unsubscription is permanent in your inbox, but the scan results are not stored.
