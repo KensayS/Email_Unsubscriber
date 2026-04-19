@@ -33,7 +33,7 @@ export async function fetchSenders(
   const gmail = google.gmail({ version: 'v1', auth })
 
   const afterStr = afterDate.toISOString().slice(0, 10).replace(/-/g, '/')
-  const query = `after:${afterStr} has:list-unsubscribe`
+  const query = `category:promotions after:${afterStr}`
 
   const messageIds: string[] = []
   let pageToken: string | undefined
@@ -82,6 +82,11 @@ export async function fetchSenders(
       if (existing) {
         existing.count++
         if (subject && existing.subjects.length < 5) existing.subjects.push(subject)
+        // Capture header from any email in the thread that has it
+        if (listUnsubscribe && !existing.listUnsubscribe) {
+          existing.listUnsubscribe = listUnsubscribe
+          existing.listUnsubscribePost = listUnsubscribePost
+        }
       } else {
         senderMap.set(email, {
           name: name || email,
@@ -96,6 +101,6 @@ export async function fetchSenders(
   }
 
   return Array.from(senderMap.values())
-    .filter((s) => s.count >= 2)
+    .filter((s) => s.count >= 2 && s.listUnsubscribe)
     .sort((a, b) => b.count - a.count)
 }
