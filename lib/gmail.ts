@@ -32,8 +32,8 @@ export async function fetchSenders(
   auth.setCredentials({ access_token: accessToken })
   const gmail = google.gmail({ version: 'v1', auth })
 
-  const afterTimestamp = Math.floor(afterDate.getTime() / 1000)
-  const query = `after:${afterTimestamp} has:list-unsubscribe`
+  const afterStr = afterDate.toISOString().slice(0, 10).replace(/-/g, '/')
+  const query = `after:${afterStr} has:list-unsubscribe`
 
   const messageIds: string[] = []
   let pageToken: string | undefined
@@ -95,5 +95,7 @@ export async function fetchSenders(
     }
   }
 
-  return Array.from(senderMap.values()).sort((a, b) => b.count - a.count)
+  return Array.from(senderMap.values())
+    .filter((s) => s.count >= 2)
+    .sort((a, b) => b.count - a.count)
 }
