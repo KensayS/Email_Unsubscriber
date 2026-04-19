@@ -4,11 +4,11 @@ import { useState, useCallback } from 'react'
 import { signOut } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { TimeframeSelect } from '@/components/timeframe-select'
-import { SenderCard } from '@/components/sender-card'
+import { SenderTable } from '@/components/sender-table'
 import { SenderInfo, StreamEvent, Timeframe, UnsubscribeResult } from '@/types'
 
 export function DashboardClient() {
-  const [timeframe, setTimeframe] = useState<Timeframe>(6)
+  const [timeframe, setTimeframe] = useState<Timeframe>(1)
   const [scanning, setScanning] = useState(false)
   const [senders, setSenders] = useState<SenderInfo[]>([])
   const [done, setDone] = useState(false)
@@ -95,6 +95,18 @@ export function DashboardClient() {
 
       {/* Content */}
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-3">
+        {/* Session persistence warning */}
+        <div className="rounded-lg bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 p-3 text-sm text-amber-900 dark:text-amber-100">
+          <strong>Note:</strong> This app uses no database. If you unsubscribe, the list will still appear across sessions. Unsubscription is permanent in your inbox, but the scan results are not stored.
+        </div>
+
+        {/* 3 months warning */}
+        {timeframe >= 3 && (
+          <div className="rounded-lg bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 p-3 text-sm text-blue-900 dark:text-blue-100">
+            <strong>Heads up:</strong> Scanning {timeframe} months takes significantly longer. Start with 1 month for faster results.
+          </div>
+        )}
+
         {error && (
           <p className="text-destructive text-sm text-center py-4">{error}</p>
         )}
@@ -117,13 +129,12 @@ export function DashboardClient() {
           </p>
         )}
 
-        {senders.map((sender) => (
-          <SenderCard
-            key={sender.email}
-            sender={sender}
+        {senders.length > 0 && (
+          <SenderTable
+            senders={senders}
             onUnsubscribe={handleUnsubscribe}
           />
-        ))}
+        )}
       </main>
     </div>
   )
