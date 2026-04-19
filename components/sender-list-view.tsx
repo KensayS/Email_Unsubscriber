@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { SenderInfo, UnsubscribeResult, UnsubscribeStatus } from '@/types'
-import { buildSubjectSnippet } from '@/lib/summary'
+import { SenderDetailsModal } from '@/components/sender-details-modal'
 
 interface Props {
   senders: SenderInfo[]
@@ -24,6 +24,7 @@ const BUTTON_LABELS: Record<UnsubscribeStatus, string> = {
 export function SenderListView({ senders, onUnsubscribe }: Props) {
   const [statuses, setStatuses] = useState<Record<string, UnsubscribeStatus>>({})
   const [urls, setUrls] = useState<Record<string, string>>({})
+  const [selectedSender, setSelectedSender] = useState<SenderInfo | null>(null)
 
   async function handleUnsubscribe(sender: SenderInfo) {
     if (!onUnsubscribe || statuses[sender.email] !== 'idle') return
@@ -51,72 +52,84 @@ export function SenderListView({ senders, onUnsubscribe }: Props) {
   }
 
   return (
-    <div className="w-full rounded-lg border bg-card overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b bg-muted/40">
-              <th className="text-left px-4 py-3 font-semibold text-sm h-12">Name</th>
-              <th className="text-left px-4 py-3 font-semibold text-sm h-12 hidden md:table-cell">Email</th>
-              <th className="text-right px-4 py-3 font-semibold text-sm h-12 w-24">Count</th>
-              <th className="text-right px-4 py-3 font-semibold text-sm h-12 w-32">Action</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y">
-            {senders.map((sender) => {
-              const status = statuses[sender.email] || 'idle'
-              const isDisabled = status === 'loading' || status === 'unsubscribed' || status === 'not_found'
-              const label = BUTTON_LABELS[status]
+    <>
+      <div className="w-full rounded-lg border bg-card overflow-hidden">
+        <div className="divide-y">
+          <div className="hidden md:grid grid-cols-12 gap-2 bg-muted/40 px-4 py-3 font-semibold text-sm h-12 items-center">
+            <div className="col-span-4">Name</div>
+            <div className="col-span-4">Email</div>
+            <div className="col-span-2 text-right">Count</div>
+            <div className="col-span-2 text-right">Action</div>
+          </div>
 
-              return (
-                <tr
-                  key={sender.email}
-                  className="hover:bg-muted/40 transition-colors h-14"
-                >
-                  {/* Name */}
-                  <td className="px-4 py-3 min-w-0">
-                    <div>
-                      <div className="font-medium text-sm truncate">{sender.name}</div>
-                      <div className="text-xs text-muted-foreground truncate">
-                        {buildSubjectSnippet(sender.subjects, sender.email) || sender.email}
-                      </div>
-                    </div>
-                  </td>
+          {senders.map((sender) => {
+            const status = statuses[sender.email] || 'idle'
+            const isDisabled = status === 'loading' || status === 'unsubscribed' || status === 'not_found'
+            const label = BUTTON_LABELS[status]
 
-                  {/* Email (hidden on mobile) */}
-                  <td className="px-4 py-3 text-muted-foreground text-sm truncate hidden md:table-cell">
-                    {sender.email}
-                  </td>
+            return (
+              <div
+                key={sender.email}
+                className="grid grid-cols-12 gap-2 px-4 py-3 hover:bg-muted/40 transition-colors items-center md:h-14"
+              >
+                {/* Name - full width on mobile, 4 cols on desktop */}
+                <div className="col-span-12 md:col-span-4 min-w-0">
+                  <div className="font-medium text-sm truncate">{sender.name}</div>
+                  <button
+                    onClick={() => setSelectedSender(sender)}
+                    className="text-xs text-blue-600 hover:underline truncate text-left"
+                  >
+                    See details
+                  </button>
+                </div>
 
-                  {/* Count */}
-                  <td className="px-4 py-3 text-right">
-                    <Badge variant="secondary" className="text-xs justify-center w-16">
-                      {sender.count}
-                    </Badge>
-                  </td>
+                {/* Email - hidden on mobile */}
+                <div className="hidden md:block md:col-span-4 min-w-0">
+                  <div className="text-sm text-muted-foreground truncate">{sender.email}</div>
+                </div>
 
-                  {/* Action */}
-                  <td className="px-4 py-3 text-right">
-                    <Button
-                      size="sm"
-                      variant={
-                        status === 'unsubscribed' ? 'secondary'
-                        : status === 'not_found' ? 'ghost'
-                        : 'default'
-                      }
-                      disabled={isDisabled}
-                      onClick={() => handleButtonClick(sender)}
-                      className="text-xs whitespace-nowrap"
-                    >
-                      {label}
-                    </Button>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
+                {/* Count */}
+                <div className="col-span-3 md:col-span-2 text-right">
+                  <Badge variant="secondary" className="text-xs">
+                    {sender.count}
+                  </Badge>
+                </div>
+
+                {/* Action Button */}
+                <div className="col-span-9 md:col-span-2 text-right">
+                  <Button
+                    size="sm"
+                    variant={
+                      status === 'unsubscribed' ? 'secondary'
+                      : status === 'not_found' ? 'ghost'
+                      : 'default'
+                    }
+                    disabled={isDisabled}
+                    onClick={() => handleButtonClick(sender)}
+                    className="text-xs whitespace-nowrap h-8 w-full md:w-auto"
+                  >
+                    {label}
+                  </Button>
+                </div>
+              </div>
+            )
+          })}
+        </div>
       </div>
-    </div>
+
+      {/* Details Modal */}
+      <SenderDetailsModal
+        sender={selectedSender}
+        onClose={() => setSelectedSender(null)}
+        onUnsubscribe={handleButtonClick}
+        status={statuses[selectedSender?.email || ''] || 'idle'}
+        buttonLabel={BUTTON_LABELS[statuses[selectedSender?.email || ''] || 'idle']}
+        isDisabled={
+          statuses[selectedSender?.email || ''] === 'loading' ||
+          statuses[selectedSender?.email || ''] === 'unsubscribed' ||
+          statuses[selectedSender?.email || ''] === 'not_found'
+        }
+      />
+    </>
   )
 }
