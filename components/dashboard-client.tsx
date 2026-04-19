@@ -16,6 +16,7 @@ export function DashboardClient() {
   const [senders, setSenders] = useState<SenderInfo[]>([])
   const [done, setDone] = useState(false)
   const [error, setError] = useState<string>()
+  const [warningsMinimized, setWarningsMinimized] = useState(false)
 
   const handleScan = useCallback(async () => {
     setSenders([])
@@ -94,6 +95,15 @@ export function DashboardClient() {
           </Button>
         </div>
         <div className="flex items-center gap-2">
+          {warningsMinimized && (
+            <button
+              onClick={() => setWarningsMinimized(false)}
+              className="text-xl hover:opacity-70 transition-opacity"
+              title="Show warnings"
+            >
+              ⚠️
+            </button>
+          )}
           {senders.length > 0 && <ViewModeSelect value={viewMode} onChange={setViewMode} disabled={scanning} />}
           <Button variant="ghost" size="sm" onClick={() => signOut({ callbackUrl: '/' })}>
             Sign out
@@ -103,15 +113,37 @@ export function DashboardClient() {
 
       {/* Content */}
       <main className="w-full px-4 py-6 space-y-3 lg:px-8">
-        {/* Session persistence warning */}
-        <div className="rounded-lg bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 p-3 text-sm text-amber-900 dark:text-amber-100">
-          <strong>Note:</strong> This app uses no database. If you unsubscribe, the list will still appear across sessions. Unsubscription is permanent in your inbox, but the scan results are not stored.
-        </div>
+        {!warningsMinimized && (
+          <div className="space-y-3">
+            {/* Session persistence warning */}
+            <div className="rounded-lg bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 p-3 text-sm text-amber-900 dark:text-amber-100 flex items-start gap-3">
+              <div className="flex-1">
+                <strong>Note:</strong> This app uses no database. If you unsubscribe, the list will still appear across sessions. Unsubscription is permanent in your inbox, but the scan results are not stored.
+              </div>
+              <button
+                onClick={() => setWarningsMinimized(true)}
+                className="text-amber-900 dark:text-amber-100 hover:opacity-70 transition-opacity flex-shrink-0 text-lg"
+                title="Minimize warnings"
+              >
+                ✕
+              </button>
+            </div>
 
-        {/* 3 months warning */}
-        {timeframe >= 3 && (
-          <div className="rounded-lg bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 p-3 text-sm text-blue-900 dark:text-blue-100">
-            <strong>Heads up:</strong> Scanning {timeframe} months takes significantly longer. Start with 1 month for faster results.
+            {/* 3 months warning */}
+            {timeframe >= 3 && (
+              <div className="rounded-lg bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 p-3 text-sm text-blue-900 dark:text-blue-100 flex items-start gap-3">
+                <div className="flex-1">
+                  <strong>Heads up:</strong> Scanning {timeframe} months takes significantly longer. Start with 1 month for faster results.
+                </div>
+                <button
+                  onClick={() => setWarningsMinimized(true)}
+                  className="text-blue-900 dark:text-blue-100 hover:opacity-70 transition-opacity flex-shrink-0 text-lg"
+                  title="Minimize warnings"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
           </div>
         )}
 
