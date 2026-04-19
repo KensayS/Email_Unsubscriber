@@ -25,18 +25,34 @@ export function SenderGrid({ senders, onUnsubscribe }: Props) {
   const [statuses, setStatuses] = useState<Record<string, UnsubscribeStatus>>({})
   const [urls, setUrls] = useState<Record<string, string>>({})
 
+  console.log('[SenderGrid] Initialized with onUnsubscribe:', !!onUnsubscribe)
+
   async function handleUnsubscribe(sender: SenderInfo) {
-    if (!onUnsubscribe || statuses[sender.email] !== 'idle') return
+    console.log(`[SenderGrid] handleUnsubscribe called for ${sender.email}`)
+    console.log(`[SenderGrid] onUnsubscribe defined: ${!!onUnsubscribe}`)
+    console.log(`[SenderGrid] Current status: ${statuses[sender.email] || 'idle'}`)
+
+    if (!onUnsubscribe) {
+      console.error('[SenderGrid] onUnsubscribe is not defined!')
+      return
+    }
+    if (statuses[sender.email] !== 'idle') {
+      console.log(`[SenderGrid] Status is not idle, aborting: ${statuses[sender.email]}`)
+      return
+    }
+    console.log(`[SenderGrid] Setting status to loading for ${sender.email}`)
     setStatuses((p) => ({ ...p, [sender.email]: 'loading' }))
 
     try {
+      console.log(`[SenderGrid] Calling onUnsubscribe for ${sender.email}`)
       const result = await onUnsubscribe(sender)
+      console.log(`[SenderGrid] Got result:`, result)
       setStatuses((p) => ({ ...p, [sender.email]: result.status as UnsubscribeStatus }))
       if (result.url) {
         setUrls((p) => ({ ...p, [sender.email]: result.url! }))
       }
     } catch (error) {
-      console.error(`Failed to unsubscribe from ${sender.email}:`, error)
+      console.error(`[SenderGrid] Failed to unsubscribe from ${sender.email}:`, error)
       setStatuses((p) => ({ ...p, [sender.email]: 'idle' }))
     }
   }
