@@ -1,6 +1,6 @@
-import { withAuth } from 'next-auth/middleware'
+import authMiddleware from 'next-auth/middleware'
 
-export default withAuth()
+export const middleware = authMiddleware
 
 export const config = {
   matcher: ['/dashboard/:path*'],
