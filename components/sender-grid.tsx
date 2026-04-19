@@ -35,7 +35,8 @@ export function SenderGrid({ senders, onUnsubscribe }: Props) {
       if (result.url) {
         setUrls((p) => ({ ...p, [sender.email]: result.url! }))
       }
-    } catch {
+    } catch (error) {
+      console.error(`Failed to unsubscribe from ${sender.email}:`, error)
       setStatuses((p) => ({ ...p, [sender.email]: 'idle' }))
     }
   }

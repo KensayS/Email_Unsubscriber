@@ -88,10 +88,7 @@ export function SenderDetailsModal({ sender, onClose, onUnsubscribe, status, isD
               : 'default'
             }
             disabled={isDisabled}
-            onClick={() => {
-              onUnsubscribe(sender)
-              onClose()
-            }}
+            onClick={() => onUnsubscribe(sender)}
             className="flex-1"
           >
             {BUTTON_LABELS[status]}

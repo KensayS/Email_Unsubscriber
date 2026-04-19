@@ -79,8 +79,14 @@ export function DashboardClient() {
       }),
     })
 
-    if (!response.ok) throw new Error('Unsubscribe request failed')
-    return response.json()
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      throw new Error(errorData.error || 'Unsubscribe request failed')
+    }
+
+    const result = await response.json()
+    console.log(`Unsubscribe ${sender.email}: ${result.status}`)
+    return result
   }
 
   return (
