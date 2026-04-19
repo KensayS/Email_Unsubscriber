@@ -70,23 +70,37 @@ export function DashboardClient() {
   }, [timeframe])
 
   async function handleUnsubscribe(sender: SenderInfo): Promise<UnsubscribeResult> {
-    const response = await fetch('/api/unsubscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        listUnsubscribe: sender.listUnsubscribe,
-        listUnsubscribePost: sender.listUnsubscribePost,
-      }),
+    console.log(`[Dashboard] Starting unsubscribe for ${sender.email}`)
+    console.log(`[Dashboard] Sending headers:`, {
+      listUnsubscribe: sender.listUnsubscribe,
+      listUnsubscribePost: sender.listUnsubscribePost,
     })
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}))
-      throw new Error(errorData.error || 'Unsubscribe request failed')
-    }
+    try {
+      const response = await fetch('/api/unsubscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          listUnsubscribe: sender.listUnsubscribe,
+          listUnsubscribePost: sender.listUnsubscribePost,
+        }),
+      })
 
-    const result = await response.json()
-    console.log(`Unsubscribe ${sender.email}: ${result.status}`)
-    return result
+      console.log(`[Dashboard] Got response, status: ${response.status}`)
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        console.error(`[Dashboard] Error response:`, errorData)
+        throw new Error(errorData.error || 'Unsubscribe request failed')
+      }
+
+      const result = await response.json()
+      console.log(`[Dashboard] Unsubscribe ${sender.email}: ${result.status}`, result)
+      return result
+    } catch (error) {
+      console.error(`[Dashboard] Exception in handleUnsubscribe:`, error)
+      throw error
+    }
   }
 
   return (
