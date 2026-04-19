@@ -27,7 +27,8 @@ export function SenderListView({ senders, onUnsubscribe }: Props) {
   const [selectedSender, setSelectedSender] = useState<SenderInfo | null>(null)
 
   async function handleUnsubscribe(sender: SenderInfo) {
-    if (!onUnsubscribe || statuses[sender.email] !== 'idle') return
+    const currentStatus = statuses[sender.email] || 'idle'
+    if (!onUnsubscribe || currentStatus !== 'idle') return
     setStatuses((p) => ({ ...p, [sender.email]: 'loading' }))
 
     try {

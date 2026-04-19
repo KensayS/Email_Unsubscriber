@@ -28,16 +28,17 @@ export function SenderGrid({ senders, onUnsubscribe }: Props) {
   console.log('[SenderGrid] Initialized with onUnsubscribe:', !!onUnsubscribe)
 
   async function handleUnsubscribe(sender: SenderInfo) {
+    const currentStatus = statuses[sender.email] || 'idle'
     console.log(`[SenderGrid] handleUnsubscribe called for ${sender.email}`)
     console.log(`[SenderGrid] onUnsubscribe defined: ${!!onUnsubscribe}`)
-    console.log(`[SenderGrid] Current status: ${statuses[sender.email] || 'idle'}`)
+    console.log(`[SenderGrid] Current status: ${currentStatus}`)
 
     if (!onUnsubscribe) {
       console.error('[SenderGrid] onUnsubscribe is not defined!')
       return
     }
-    if (statuses[sender.email] !== 'idle') {
-      console.log(`[SenderGrid] Status is not idle, aborting: ${statuses[sender.email]}`)
+    if (currentStatus !== 'idle') {
+      console.log(`[SenderGrid] Status is not idle, aborting: ${currentStatus}`)
       return
     }
     console.log(`[SenderGrid] Setting status to loading for ${sender.email}`)
