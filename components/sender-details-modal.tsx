@@ -27,6 +27,17 @@ const BUTTON_LABELS: Record<UnsubscribeStatus, string> = {
 export function SenderDetailsModal({ sender, onClose, onUnsubscribe, status, isDisabled }: Props) {
   if (!sender) return null
 
+  const handleClick = () => {
+    console.log(`[Modal] Unsubscribe clicked for ${sender.email}`)
+    console.log(`[Modal] Sender data:`, {
+      name: sender.name,
+      email: sender.email,
+      listUnsubscribe: sender.listUnsubscribe,
+      listUnsubscribePost: sender.listUnsubscribePost
+    })
+    onUnsubscribe(sender)
+  }
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
       <div className="bg-background rounded-lg border shadow-lg max-w-lg w-full max-h-[90vh] overflow-y-auto">
@@ -88,7 +99,7 @@ export function SenderDetailsModal({ sender, onClose, onUnsubscribe, status, isD
               : 'default'
             }
             disabled={isDisabled}
-            onClick={() => onUnsubscribe(sender)}
+            onClick={handleClick}
             className="flex-1"
           >
             {BUTTON_LABELS[status]}

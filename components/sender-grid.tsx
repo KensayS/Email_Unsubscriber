@@ -43,6 +43,14 @@ export function SenderGrid({ senders, onUnsubscribe }: Props) {
 
   function handleButtonClick(sender: SenderInfo) {
     const status = statuses[sender.email] || 'idle'
+    console.log(`[SenderGrid] Button clicked for ${sender.email}, status: ${status}`)
+    console.log(`[SenderGrid] Sender data:`, {
+      name: sender.name,
+      email: sender.email,
+      listUnsubscribe: sender.listUnsubscribe,
+      listUnsubscribePost: sender.listUnsubscribePost
+    })
+
     if (status === 'open_link' || status === 'finish_in_new_tab') {
       const url = urls[sender.email]
       if (url) window.open(url, '_blank', 'noopener,noreferrer')
