@@ -4,9 +4,9 @@
 
 **Goal:** Build a deployed Next.js web app where users sign in with Google, scan their Gmail inbox for mailing lists, and unsubscribe with one click.
 
-**Architecture:** Next.js 14 App Router handles both frontend and backend API routes. Gmail is scanned via Google OAuth access token server-side only, results stream to the browser via Server-Sent Events. Gemini 1.5 Flash generates AI summaries progressively after sender cards appear.
+**Architecture:** Next.js 14 App Router handles both frontend and backend API routes. Gmail is scanned via Google OAuth access token server-side only, results stream to the browser via Server-Sent Events. Subject snippets are generated instantly from email headers.
 
-**Tech Stack:** Next.js 14, TypeScript, Tailwind CSS, shadcn/ui, NextAuth.js v4, googleapis, @google/generative-ai, Jest, React Testing Library, Vercel
+**Tech Stack:** Next.js 14, TypeScript, Tailwind CSS, shadcn/ui, NextAuth.js v4, googleapis, Jest, React Testing Library, Vercel
 
 ---
 
@@ -19,7 +19,7 @@
 | `lib/auth.ts` | NextAuth configuration (authOptions) |
 | `lib/gmail.ts` | Gmail API: fetch message IDs, extract headers, aggregate senders |
 | `lib/unsubscribe.ts` | Unsubscribe logic: POST → mailto → URL → not found |
-| `lib/gemini.ts` | Gemini API: generate single-sentence summaries |
+| `lib/summary.ts` | Subject snippet helper: builds display text from subject lines |
 | `app/api/auth/[...nextauth]/route.ts` | NextAuth route handler |
 | `app/api/scan/stream/route.ts` | SSE endpoint: streams senders then summaries |
 | `app/api/unsubscribe/route.ts` | Handles unsubscribe POST request |
@@ -32,7 +32,7 @@
 | `CLAUDE.md` | Project context for Claude Code sessions |
 | `__tests__/lib/gmail.test.ts` | Unit tests for gmail.ts |
 | `__tests__/lib/unsubscribe.test.ts` | Unit tests for unsubscribe.ts |
-| `__tests__/lib/gemini.test.ts` | Unit tests for gemini.ts |
+| `__tests__/lib/summary.test.ts` | Unit tests for summary.ts |
 | `__tests__/components/sender-card.test.tsx` | Component tests for SenderCard |
 | `__tests__/components/timeframe-select.test.tsx` | Component tests for TimeframeSelect |
 
@@ -102,7 +102,6 @@ NEXTAUTH_SECRET=your-random-secret-here
 NEXTAUTH_URL=http://localhost:3000
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
-GEMINI_API_KEY=your-gemini-api-key
 ```
 
 Create `.env.local` with the same keys (fill in real values when you have them). Add `.env.local` to `.gitignore` (should already be there from create-next-app).
@@ -159,7 +158,6 @@ export interface UnsubscribeResult {
 
 export type StreamEvent =
   | { type: 'sender'; data: SenderInfo }
-  | { type: 'summary'; email: string; summary: string }
   | { type: 'done' }
   | { type: 'error'; message: string }
 
@@ -691,41 +689,41 @@ git commit -m "feat: add unsubscribe library with POST/mailto/URL priority logic
 
 ---
 
-## Task 7: Gemini Library (TDD)
+## Task 7: Subject Snippet Helper (TDD)
+
+Summaries are built from the sender's own subject lines — no AI, no API calls, no rate limiting.
+The first 2 subject lines are joined with ` · ` and displayed as muted text in each sender card.
+If subjects is empty, the sender's email domain is used as fallback.
 
 **Files:**
-- Create: `lib/gemini.ts`
-- Create: `__tests__/lib/gemini.test.ts`
+- Create: `lib/summary.ts`
+- Create: `__tests__/lib/summary.test.ts`
 
 - [ ] **Step 1: Write failing tests**
 
-Create `__tests__/lib/gemini.test.ts`:
+Create `__tests__/lib/summary.test.ts`:
 ```ts
-import { buildSummaryPrompt } from '@/lib/gemini'
+import { buildSubjectSnippet } from '@/lib/summary'
 
-describe('buildSummaryPrompt', () => {
-  it('includes sender name in the prompt', () => {
-    const prompt = buildSummaryPrompt(['Sale: 50% off everything'], 'Nike')
-    expect(prompt).toContain('Nike')
+describe('buildSubjectSnippet', () => {
+  it('joins first 2 subjects with ·', () => {
+    const result = buildSubjectSnippet(['Sale: 50% off', 'New arrivals', 'Extra'], 'news@nike.com')
+    expect(result).toBe('Sale: 50% off · New arrivals')
   })
 
-  it('includes subject lines in the prompt', () => {
-    const prompt = buildSummaryPrompt(['Weekly digest', 'Top stories'], 'Newsletter')
-    expect(prompt).toContain('Weekly digest')
-    expect(prompt).toContain('Top stories')
+  it('returns single subject when only one exists', () => {
+    const result = buildSubjectSnippet(['Weekly digest'], 'noreply@medium.com')
+    expect(result).toBe('Weekly digest')
   })
 
-  it('limits to 5 subject lines', () => {
-    const subjects = ['s1', 's2', 's3', 's4', 's5', 's6', 's7']
-    const prompt = buildSummaryPrompt(subjects, 'Sender')
-    expect(prompt).toContain('s5')
-    expect(prompt).not.toContain('s6')
+  it('falls back to domain when subjects is empty', () => {
+    const result = buildSubjectSnippet([], 'noreply@github.com')
+    expect(result).toBe('github.com')
   })
 
-  it('handles empty subjects gracefully', () => {
-    const prompt = buildSummaryPrompt([], 'Sender')
-    expect(typeof prompt).toBe('string')
-    expect(prompt.length).toBeGreaterThan(0)
+  it('falls back to full email when no @ present', () => {
+    const result = buildSubjectSnippet([], 'unknown')
+    expect(result).toBe('unknown')
   })
 })
 ```
@@ -733,68 +731,34 @@ describe('buildSummaryPrompt', () => {
 - [ ] **Step 2: Run tests to verify they fail**
 
 ```bash
-npx jest __tests__/lib/gemini.test.ts --no-coverage
+npx jest __tests__/lib/summary.test.ts --no-coverage
 ```
-Expected: FAIL — "Cannot find module '@/lib/gemini'"
+Expected: FAIL — "Cannot find module '@/lib/summary'"
 
-- [ ] **Step 3: Implement gemini.ts**
+- [ ] **Step 3: Implement summary.ts**
 
-Create `lib/gemini.ts`:
+Create `lib/summary.ts`:
 ```ts
-import { GoogleGenerativeAI } from '@google/generative-ai'
-
-const RATE_LIMIT_DELAY_MS = 4500 // 15 RPM free tier = 1 per 4s, with buffer
-
-export function buildSummaryPrompt(subjects: string[], senderName: string): string {
-  if (subjects.length === 0) {
-    return `Write a single sentence (max 15 words) describing what kind of emails "${senderName}" likely sends. Be specific and concise. Reply with only the sentence.`
+export function buildSubjectSnippet(subjects: string[], email: string): string {
+  if (subjects.length > 0) {
+    return subjects.slice(0, 2).join(' · ')
   }
-
-  const lines = subjects.slice(0, 5).join('\n')
-  return `Based on these email subject lines from "${senderName}", write a single sentence (max 15 words) describing what kind of emails they send. Be specific and concise.
-
-Subject lines:
-${lines}
-
-Reply with only the description sentence, nothing else.`
+  return email.split('@')[1] ?? email
 }
-
-export async function generateSummary(
-  subjects: string[],
-  senderName: string
-): Promise<string> {
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
-
-  const prompt = buildSummaryPrompt(subjects, senderName)
-
-  try {
-    const result = await model.generateContent(prompt)
-    return result.response.text().trim()
-  } catch {
-    return ''
-  }
-}
-
-export function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-export { RATE_LIMIT_DELAY_MS }
 ```
 
 - [ ] **Step 4: Run tests to verify they pass**
 
 ```bash
-npx jest __tests__/lib/gemini.test.ts --no-coverage
+npx jest __tests__/lib/summary.test.ts --no-coverage
 ```
 Expected: PASS — 4 tests passing.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add lib/gemini.ts __tests__/lib/gemini.test.ts
-git commit -m "feat: add Gemini library for AI email summaries"
+git add lib/summary.ts __tests__/lib/summary.test.ts
+git commit -m "feat: add subject snippet helper for sender summaries"
 ```
 
 ---
@@ -811,7 +775,6 @@ Create `app/api/scan/stream/route.ts`:
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { fetchSenders } from '@/lib/gmail'
-import { generateSummary, sleep, RATE_LIMIT_DELAY_MS } from '@/lib/gemini'
 import { StreamEvent } from '@/types'
 
 export const runtime = 'nodejs'
@@ -837,20 +800,8 @@ export async function GET(request: Request) {
       try {
         const senders = await fetchSenders(session.accessToken, afterDate)
 
-        // Pass 1: stream all sender cards immediately
         for (const sender of senders) {
           controller.enqueue(encode({ type: 'sender', data: sender }))
-        }
-
-        // Pass 2: generate and stream summaries with rate limiting
-        for (const sender of senders) {
-          const summary = await generateSummary(sender.subjects, sender.name)
-          if (summary) {
-            controller.enqueue(
-              encode({ type: 'summary', email: sender.email, summary })
-            )
-          }
-          await sleep(RATE_LIMIT_DELAY_MS)
         }
 
         controller.enqueue(encode({ type: 'done' }))
@@ -1068,7 +1019,7 @@ const mockSender: SenderInfo = {
   name: 'Nike',
   email: 'news@nike.com',
   count: 42,
-  subjects: ['Sale: 50% off'],
+  subjects: ['Sale: 50% off', 'New arrivals'],
   listUnsubscribe: '<https://nike.com/unsub>',
   listUnsubscribePost: 'List-Unsubscribe=One-Click',
 }
@@ -1085,14 +1036,14 @@ describe('SenderCard', () => {
     expect(screen.getByText('42 emails')).toBeInTheDocument()
   })
 
-  it('shows AI summary when provided', () => {
-    render(<SenderCard sender={mockSender} summary="Athletic gear and shoe promotions." />)
-    expect(screen.getByText('Athletic gear and shoe promotions.')).toBeInTheDocument()
+  it('shows subject snippet from sender subjects', () => {
+    render(<SenderCard sender={mockSender} />)
+    expect(screen.getByText('Sale: 50% off · New arrivals')).toBeInTheDocument()
   })
 
-  it('shows skeleton when summary is not yet loaded', () => {
-    render(<SenderCard sender={mockSender} />)
-    expect(screen.getByTestId('summary-skeleton')).toBeInTheDocument()
+  it('shows domain fallback when subjects is empty', () => {
+    render(<SenderCard sender={{ ...mockSender, subjects: [] }} />)
+    expect(screen.getByText('nike.com')).toBeInTheDocument()
   })
 
   it('renders Unsubscribe button in idle state', () => {
@@ -1145,10 +1096,10 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { SenderInfo, UnsubscribeResult, UnsubscribeStatus } from '@/types'
+import { buildSubjectSnippet } from '@/lib/summary'
 
 interface Props {
   sender: SenderInfo
-  summary?: string
   onUnsubscribe?: (sender: SenderInfo) => Promise<UnsubscribeResult>
 }
 
@@ -1162,9 +1113,11 @@ const BUTTON_LABELS: Record<UnsubscribeStatus, string> = {
   not_found: 'No unsubscribe found',
 }
 
-export function SenderCard({ sender, summary, onUnsubscribe }: Props) {
+export function SenderCard({ sender, onUnsubscribe }: Props) {
   const [status, setStatus] = useState<UnsubscribeStatus>('idle')
   const [openUrl, setOpenUrl] = useState<string>()
+
+  const snippet = buildSubjectSnippet(sender.subjects, sender.email)
 
   async function handleUnsubscribe() {
     if (!onUnsubscribe || status !== 'idle') return
@@ -1199,16 +1152,7 @@ export function SenderCard({ sender, summary, onUnsubscribe }: Props) {
             <Badge variant="secondary">{sender.count} emails</Badge>
           </div>
           <p className="text-sm text-muted-foreground truncate">{sender.email}</p>
-          <div className="mt-1 text-sm text-muted-foreground min-h-[1.25rem]">
-            {summary ? (
-              <span>{summary}</span>
-            ) : (
-              <span
-                data-testid="summary-skeleton"
-                className="inline-block h-4 w-48 animate-pulse rounded bg-muted"
-              />
-            )}
-          </div>
+          <p className="mt-1 text-sm text-muted-foreground truncate">{snippet}</p>
         </div>
         <Button
           size="sm"
@@ -1240,7 +1184,7 @@ Expected: PASS — 8 tests passing.
 
 ```bash
 git add components/sender-card.tsx __tests__/components/sender-card.test.tsx
-git commit -m "feat: add SenderCard component with all unsubscribe button states"
+git commit -m "feat: add SenderCard component with subject snippet and unsubscribe states"
 ```
 
 ---
@@ -1477,13 +1421,11 @@ export function DashboardClient() {
   const [timeframe, setTimeframe] = useState<Timeframe>(6)
   const [scanning, setScanning] = useState(false)
   const [senders, setSenders] = useState<SenderInfo[]>([])
-  const [summaries, setSummaries] = useState<Record<string, string>>({})
   const [done, setDone] = useState(false)
   const [error, setError] = useState<string>()
 
   const handleScan = useCallback(async () => {
     setSenders([])
-    setSummaries({})
     setDone(false)
     setError(undefined)
     setScanning(true)
@@ -1516,8 +1458,6 @@ export function DashboardClient() {
                 const next = [...prev, event.data]
                 return next.sort((a, b) => b.count - a.count)
               })
-            } else if (event.type === 'summary') {
-              setSummaries((prev) => ({ ...prev, [event.email]: event.summary }))
             } else if (event.type === 'done') {
               setDone(true)
             } else if (event.type === 'error') {
@@ -1591,16 +1531,9 @@ export function DashboardClient() {
           <SenderCard
             key={sender.email}
             sender={sender}
-            summary={summaries[sender.email]}
             onUnsubscribe={handleUnsubscribe}
           />
         ))}
-
-        {scanning && senders.length > 0 && (
-          <p className="text-xs text-muted-foreground text-center pt-2 animate-pulse">
-            Generating AI summaries…
-          </p>
-        )}
       </main>
     </div>
   )
@@ -1652,7 +1585,7 @@ A Next.js 14 web app where users sign in with Google OAuth, scan their Gmail inb
 - **UI:** Tailwind CSS + shadcn/ui (components in `components/ui/`)
 - **Auth:** NextAuth.js v4 (`lib/auth.ts` holds `authOptions`)
 - **Gmail:** googleapis package (`lib/gmail.ts`)
-- **AI:** Gemini 1.5 Flash via `@google/generative-ai` (`lib/gemini.ts`)
+- **Summaries:** Rule-based subject snippet helper (`lib/summary.ts`) — no AI/Gemini
 - **Hosting:** Vercel (free tier)
 
 ## Environment Variables
@@ -1660,18 +1593,16 @@ All required in `.env.local` (see `.env.example`):
 - `NEXTAUTH_SECRET` — generate with `openssl rand -base64 32`
 - `NEXTAUTH_URL` — `http://localhost:3000` locally, your Vercel URL in production
 - `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` — from Google Cloud Console → APIs & Services → Credentials. Enable Gmail API. Add `http://localhost:3000/api/auth/callback/google` as authorized redirect URI.
-- `GEMINI_API_KEY` — from https://aistudio.google.com/app/apikey (free)
 
 ## Key Patterns
 
 ### Streaming Scan (SSE)
 `/api/scan/stream` returns a `text/event-stream` response. Events are JSON:
-- `{ type: "sender", data: SenderInfo }` — streamed immediately as senders are found
-- `{ type: "summary", email: string, summary: string }` — streamed after all senders, rate-limited to 15/min (4.5s delay between Gemini calls)
+- `{ type: "sender", data: SenderInfo }` — streamed as senders are found; subjects are included in SenderInfo
 - `{ type: "done" }` — scan complete
 - `{ type: "error", message: string }` — something failed
 
-Client reads this stream in `components/dashboard-client.tsx` using `ReadableStream` + `TextDecoder`.
+Client reads this stream in `components/dashboard-client.tsx` using `ReadableStream` + `TextDecoder`. `SenderCard` calls `buildSubjectSnippet(sender.subjects, sender.email)` synchronously — no loading state needed.
 
 ### Unsubscribe Priority
 `lib/unsubscribe.ts` → `buildUnsubscribeAction()` — checks in this order:
@@ -1745,7 +1676,6 @@ git push -u origin main
    - `NEXTAUTH_URL` = `https://your-app.vercel.app` (update after first deploy)
    - `GOOGLE_CLIENT_ID` (from step 2)
    - `GOOGLE_CLIENT_SECRET` (from step 2)
-   - `GEMINI_API_KEY` (from https://aistudio.google.com/app/apikey)
 5. Click Deploy
 
 - [ ] **Step 4: Update NEXTAUTH_URL**
