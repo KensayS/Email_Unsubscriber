@@ -42,6 +42,7 @@ export async function performUnsubscribe(
   accessToken: string
 ): Promise<UnsubscribeResult> {
   const action = buildUnsubscribeAction(listUnsubscribe, listUnsubscribePost)
+  console.log('[performUnsubscribe] Action method:', action.method, action)
 
   if (action.method === 'post') {
     try {

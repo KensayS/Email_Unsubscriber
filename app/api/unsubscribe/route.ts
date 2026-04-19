@@ -17,13 +17,22 @@ export async function POST(request: Request) {
   }
 
   try {
+    console.log('[unsubscribe] Attempting unsubscribe with:', {
+      hasListUnsubscribe: !!listUnsubscribe,
+      hasListUnsubscribePost: !!listUnsubscribePost,
+      listUnsubscribePreview: listUnsubscribe?.substring(0, 50),
+    })
+
     const result = await performUnsubscribe(
       listUnsubscribe,
       listUnsubscribePost,
       session.accessToken
     )
+
+    console.log('[unsubscribe] Result:', result)
     return Response.json(result)
   } catch (error) {
+    console.error('[unsubscribe] Error:', error)
     return Response.json(
       { error: 'Unsubscribe failed. Please try again.' },
       { status: 500 }
