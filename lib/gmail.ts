@@ -72,8 +72,8 @@ export async function fetchSenders(
 
       const from = get('From') || ''
       const subject = get('Subject') || ''
-      const listUnsubscribe = get('List-Unsubscribe')
-      const listUnsubscribePost = get('List-Unsubscribe-Post')
+      const listUnsubscribe = get('List-Unsubscribe') || undefined
+      const listUnsubscribePost = get('List-Unsubscribe-Post') || undefined
 
       const { name, email } = parseSenderHeader(from)
       if (!email) continue
