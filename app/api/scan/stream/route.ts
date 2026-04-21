@@ -15,7 +15,13 @@ function getErrorMessage(error: unknown): string {
     const msg = error.message.toLowerCase()
 
     if (msg.includes('quotaexceeded') || msg.includes('quota exceeded')) {
-      return 'Gmail API quota exceeded. Please try again tomorrow.'
+      if (msg.includes('per minute')) {
+        return 'Gmail API rate limit exceeded. Please wait a moment and try again.'
+      }
+      if (msg.includes('per day')) {
+        return 'Gmail API daily quota exceeded. Please try again tomorrow.'
+      }
+      return 'Gmail API quota exceeded. Please try again in a moment.'
     }
     if (msg.includes('ratelimit') || msg.includes('rate limit')) {
       return 'Too many requests. Please wait a moment and try again.'
