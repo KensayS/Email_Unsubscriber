@@ -9,9 +9,9 @@ const FAKE_SENDERS = [
 
 export function MockDashboard() {
   return (
-    <div className="w-full rounded-[12px] border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.1)] bg-white dark:bg-[#1a1a1a] shadow-lg dark:shadow-lg overflow-hidden">
+    <div className="w-full rounded-[12px] border border-border dark:border-border bg-background dark:bg-card shadow-lg dark:shadow-lg overflow-hidden">
       {/* Browser chrome */}
-      <div className="flex items-center gap-2 border-b border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.1)] px-4 py-3 bg-[#f5f5f5] dark:bg-[#2d2d2d]">
+      <div className="flex items-center gap-2 border-b border-border dark:border-border px-4 py-3 bg-secondary dark:bg-muted">
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-full bg-red-400" />
           <div className="h-3 w-3 rounded-full bg-yellow-400" />

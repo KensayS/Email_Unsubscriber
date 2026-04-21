@@ -5,6 +5,7 @@ import { signOut, useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { TimeframeSelect } from '@/components/timeframe-select'
 import { ViewModeSelect } from '@/components/view-mode-select'
+import { ThemeToggle } from '@/components/theme-toggle'
 import { SenderGrid } from '@/components/sender-grid'
 import { SenderListView } from '@/components/sender-list-view'
 import { UnsubscribedView } from '@/components/unsubscribed-view'
@@ -159,12 +160,12 @@ export function DashboardClient() {
   }
 
   return (
-    <div className="min-h-screen bg-background dark:bg-[#0f0f0f] transition-colors duration-300">
+    <div className="min-h-screen bg-background dark:bg-background transition-colors duration-300">
       {/* Scan Progress Bar */}
       {scanning && (
-        <div className="relative h-1 bg-[rgba(0,0,0,0.08)] dark:bg-[rgba(255,255,255,0.05)] overflow-hidden">
+        <div className="relative h-1 bg-muted dark:bg-muted overflow-hidden">
           <div
-            className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-transparent via-[#6b5b95] to-transparent"
+            className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-transparent via-accent to-transparent"
             style={{
               animation: 'smooth-progress 2.5s ease-in-out infinite',
             }}
@@ -182,7 +183,7 @@ export function DashboardClient() {
       )}
 
       {/* Header */}
-      <header className="border-b border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.1)] px-4 py-4 lg:px-8 bg-white dark:bg-[#1a1a1a] transition-colors duration-300">
+      <header className="border-b border-border dark:border-border px-4 py-4 lg:px-8 bg-background dark:bg-card transition-colors duration-300">
         <div className="flex items-center gap-3 justify-between flex-wrap mb-3">
           <h1 className="font-bold text-xl text-[#1a1a1a] dark:text-[#e5e5e5] tracking-tight">📧 Inbox Manager</h1>
           <div className="flex items-center gap-2 flex-wrap">
@@ -193,6 +194,7 @@ export function DashboardClient() {
           </div>
           <div className="flex items-center gap-2">
             {senders.length > 0 && activeTab === 'scan' && <ViewModeSelect value={viewMode} onChange={setViewMode} disabled={scanning} />}
+            <ThemeToggle />
             <Button variant="ghost" size="sm" onClick={() => signOut({ callbackUrl: '/' })}>
               Sign out
             </Button>
