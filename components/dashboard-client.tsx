@@ -114,6 +114,25 @@ export function DashboardClient() {
 
       const result = await response.json()
       console.log(`[Dashboard] Unsubscribe ${sender.email}: ${result.status}`, result)
+
+      // Log to database if unsubscribe was successful
+      if (result.status === 'unsubscribed' || result.status === 'already_unsubscribed') {
+        try {
+          console.log(`[Dashboard] Logging unsubscribe to database for ${sender.email}`)
+          await fetch('/api/unsubscribe/log', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              senderEmail: sender.email,
+              senderName: sender.name,
+              unsubscribedAt: new Date().toISOString(),
+            }),
+          })
+        } catch (err) {
+          console.error('[Dashboard] Error logging unsubscribe:', err)
+        }
+      }
+
       return result
     } catch (error) {
       console.error(`[Dashboard] Exception in handleUnsubscribe:`, error)
