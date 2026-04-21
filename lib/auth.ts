@@ -38,6 +38,13 @@ export const authOptions: NextAuthOptions = {
       }
       return session
     },
+    async redirect({ url, baseUrl }) {
+      // Allow relative callback URLs
+      if (url.startsWith('/')) return `${baseUrl}${url}`
+      // Allow same origin URLs
+      else if (new URL(url).origin === baseUrl) return url
+      return baseUrl + '/dashboard'
+    },
   },
   session: {
     strategy: 'jwt',
