@@ -182,8 +182,17 @@ export function DashboardClient() {
         </div>
       )}
 
+      {/* Overlay Backdrop */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 md:hidden bg-black/50 transition-opacity duration-300"
+          onClick={() => setMobileMenuOpen(false)}
+          style={{ zIndex: 30 }}
+        />
+      )}
+
       {/* Header */}
-      <header className="border-b border-border dark:border-border bg-background dark:bg-card transition-colors duration-300">
+      <header className="border-b border-border dark:border-border bg-background dark:bg-card transition-colors duration-300 relative" style={{ zIndex: 40 }}>
         {/* Main Header Row */}
         <div className="flex items-center gap-3 justify-between px-4 py-4 lg:px-8">
           <h1 className="font-bold text-xl text-[#1a1a1a] dark:text-[#e5e5e5] tracking-tight">📧 Email Unsubscriber</h1>
@@ -201,7 +210,7 @@ export function DashboardClient() {
           </div>
 
           {/* Mobile Controls - Always visible */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex md:hidden items-center gap-2 relative">
             <TimeframeSelect value={timeframe} onChange={setTimeframe} disabled={scanning} />
             <Button onClick={handleScan} disabled={scanning} size="sm">
               {scanning ? 'Scanning…' : 'Scan'}
@@ -217,23 +226,26 @@ export function DashboardClient() {
                 <Menu className="w-5 h-5 text-foreground" />
               )}
             </button>
-          </div>
-        </div>
 
-        {/* Mobile Menu Dropdown - Animated slide down */}
-        <div
-          className={`md:hidden overflow-hidden border-t border-border transition-all duration-300 ease-out ${
-            mobileMenuOpen ? 'max-h-32 opacity-100' : 'max-h-0 opacity-0'
-          }`}
-        >
-          <div className="px-4 py-3 space-y-3">
-            <div className="flex items-center gap-2 justify-between">
-              <span className="text-sm font-medium text-foreground">Theme</span>
-              <ThemeToggle />
+            {/* Mobile Menu Dropdown - Swoop overlay */}
+            <div
+              className={`absolute right-0 top-full mt-0 w-48 md:hidden transition-all duration-300 ease-out transform origin-top-right pointer-events-none ${
+                mobileMenuOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+              }`}
+              style={{ pointerEvents: mobileMenuOpen ? 'auto' : 'none' }}
+            >
+              <div className="mt-2 space-y-2 py-2">
+                <div className="px-4 flex items-center gap-2 justify-between">
+                  <span className="text-xs font-medium text-foreground">Theme</span>
+                  <ThemeToggle />
+                </div>
+                <div className="px-3">
+                  <Button variant="outline" size="sm" onClick={() => signOut({ callbackUrl: '/' })} className="w-full border-2 border-destructive hover:bg-destructive/5 text-destructive font-medium text-xs">
+                    Sign out
+                  </Button>
+                </div>
+              </div>
             </div>
-            <Button variant="outline" size="sm" onClick={() => signOut({ callbackUrl: '/' })} className="w-full border-2 border-destructive hover:bg-destructive/5 text-destructive font-medium">
-              Sign out
-            </Button>
           </div>
         </div>
 
