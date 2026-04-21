@@ -33,6 +33,7 @@ export async function GET(request: Request) {
         controller.enqueue(encode({ type: 'done' }))
         controller.close()
       } catch (error) {
+        console.error('[scan/stream] fetchSenders error:', error)
         controller.enqueue(
           encode({ type: 'error', message: 'Scan failed. Please try again.' })
         )
