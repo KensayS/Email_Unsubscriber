@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react'
 import { signOut, useSession } from 'next-auth/react'
+import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { TimeframeSelect } from '@/components/timeframe-select'
 import { ViewModeSelect } from '@/components/view-mode-select'
@@ -21,6 +22,7 @@ export function DashboardClient() {
   const [done, setDone] = useState(false)
   const [error, setError] = useState<string>()
   const [unsubscribedCount, setUnsubscribedCount] = useState(0)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const refreshUnsubscribedCount = useCallback(async () => {
     try {
@@ -39,6 +41,7 @@ export function DashboardClient() {
   }, [])
 
   const handleScan = useCallback(async () => {
+    setMobileMenuOpen(false)
     setSenders([])
     setDone(false)
     setError(undefined)
@@ -183,27 +186,66 @@ export function DashboardClient() {
       )}
 
       {/* Header */}
-      <header className="border-b border-border dark:border-border px-4 py-4 lg:px-8 bg-background dark:bg-card transition-colors duration-300">
-        <div className="flex items-center gap-3 justify-between flex-wrap mb-3">
+      <header className="border-b border-border dark:border-border bg-background dark:bg-card transition-colors duration-300">
+        {/* Row 1: Title + Desktop Controls + Mobile Menu Toggle */}
+        <div className="flex items-center gap-3 justify-between px-4 py-4 lg:px-8">
           <h1 className="font-bold text-xl text-[#1a1a1a] dark:text-[#e5e5e5] tracking-tight">📧 Email Unsubscriber</h1>
-          <div className="flex items-center gap-2 flex-wrap">
+
+          {/* Desktop Controls - Hidden on mobile */}
+          <div className="hidden md:flex items-center gap-2">
             <TimeframeSelect value={timeframe} onChange={setTimeframe} disabled={scanning} />
             <Button onClick={handleScan} disabled={scanning} size="sm">
               {scanning ? 'Scanning…' : 'Scan'}
             </Button>
           </div>
-          <div className="flex items-center gap-2">
+
+          {/* Desktop Right Controls - Hidden on mobile */}
+          <div className="hidden md:flex items-center gap-2">
             {senders.length > 0 && activeTab === 'scan' && <ViewModeSelect value={viewMode} onChange={setViewMode} disabled={scanning} />}
             <ThemeToggle />
             <Button variant="outline" size="sm" onClick={() => signOut({ callbackUrl: '/' })} className="border-2 border-destructive hover:bg-destructive/5 text-destructive font-medium">
               Sign out
             </Button>
           </div>
+
+          {/* Mobile Menu Toggle - Hidden on desktop */}
+          <div className="flex md:hidden items-center gap-2">
+            <ThemeToggle />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-lg hover:bg-secondary transition-colors"
+              title={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            >
+              {mobileMenuOpen ? (
+                <X className="w-5 h-5 text-foreground" />
+              ) : (
+                <Menu className="w-5 h-5 text-foreground" />
+              )}
+            </button>
+          </div>
         </div>
+
+        {/* Row 2: Mobile Menu - Only visible when mobileMenuOpen */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-border px-4 py-3 space-y-3">
+            <div className="space-y-2">
+              <TimeframeSelect value={timeframe} onChange={setTimeframe} disabled={scanning} />
+              <Button onClick={handleScan} disabled={scanning} size="sm" className="w-full">
+                {scanning ? 'Scanning…' : 'Scan'}
+              </Button>
+            </div>
+            {senders.length > 0 && activeTab === 'scan' && (
+              <ViewModeSelect value={viewMode} onChange={setViewMode} disabled={scanning} />
+            )}
+            <Button variant="outline" size="sm" onClick={() => signOut({ callbackUrl: '/' })} className="w-full border-2 border-destructive hover:bg-destructive/5 text-destructive font-medium">
+              Sign out
+            </Button>
+          </div>
+        )}
 
         {/* Tab Switcher - only show when senders exist */}
         {senders.length > 0 && (
-          <div className="flex items-center gap-2 pt-3 -mx-4 -mb-4 px-4">
+          <div className="flex items-center gap-2 px-4 py-3 -mx-4 -mb-3 border-t border-border">
             <button
               onClick={() => setActiveTab('scan')}
               className={`px-4 py-2 rounded-full font-medium text-sm transition-colors ${
