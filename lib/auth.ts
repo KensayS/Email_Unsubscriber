@@ -41,7 +41,7 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: 'jwt',
-    maxAge: 8 * 60 * 60,
+    maxAge: 55 * 60,   // 55 min — matches Google access token lifetime
   },
   cookies: {
     sessionToken: {
