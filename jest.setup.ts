@@ -1,4 +1,11 @@
 import '@testing-library/jest-dom'
+import dotenv from 'dotenv'
+import path from 'path'
+
+// Load environment variables from .env.local for tests
+dotenv.config({
+  path: path.resolve(__dirname, '.env.local'),
+})
 
 // Polyfills for Radix UI components in jsdom (only applies when window is defined)
 if (typeof window !== 'undefined') {
