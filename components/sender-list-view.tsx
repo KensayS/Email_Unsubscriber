@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { SenderInfo, UnsubscribeResult, UnsubscribeStatus } from '@/types'
+import { SenderInfo, UnsubscribeResult, UnsubscribeStatus, UnsubscribedRecord } from '@/types'
 import { SenderDetailsModal } from '@/components/sender-details-modal'
 
 
@@ -26,6 +26,22 @@ export function SenderListView({ senders, onUnsubscribe }: Props) {
   const [statuses, setStatuses] = useState<Record<string, UnsubscribeStatus>>({})
   const [urls, setUrls] = useState<Record<string, string>>({})
   const [selectedSender, setSelectedSender] = useState<SenderInfo | null>(null)
+  const [unsubscribedEmails, setUnsubscribedEmails] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
+    async function fetchUnsubscribed() {
+      try {
+        const response = await fetch('/api/unsubscribes')
+        if (response.ok) {
+          const records = (await response.json()) as UnsubscribedRecord[]
+          setUnsubscribedEmails(new Set(records.map((r) => r.sender_email)))
+        }
+      } catch (err) {
+        console.error('[SenderListView] Error fetching unsubscribed:', err)
+      }
+    }
+    fetchUnsubscribed()
+  }, [])
 
   async function handleUnsubscribe(sender: SenderInfo) {
     const currentStatus = statuses[sender.email] || 'idle'
@@ -73,7 +89,9 @@ export function SenderListView({ senders, onUnsubscribe }: Props) {
             <div className="col-span-2 text-right">Action</div>
           </div>
 
-          {senders.map((sender) => {
+          {senders
+            .filter((s) => !unsubscribedEmails.has(s.email))
+            .map((sender) => {
             const status = statuses[sender.email] || 'idle'
             const isDisabled = status === 'loading' || status === 'unsubscribed' || status === 'not_found'
             const label = BUTTON_LABELS[status]

@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { SenderInfo, UnsubscribeResult, UnsubscribeStatus } from '@/types'
+import { SenderInfo, UnsubscribeResult, UnsubscribeStatus, UnsubscribedRecord } from '@/types'
 import { buildSubjectSnippet } from '@/lib/summary'
 
 interface Props {
@@ -26,6 +26,22 @@ export function SenderGrid({ senders, onUnsubscribe }: Props) {
   const [statuses, setStatuses] = useState<Record<string, UnsubscribeStatus>>({})
   const [urls, setUrls] = useState<Record<string, string>>({})
   const [fadingOut, setFadingOut] = useState<Set<string>>(new Set())
+  const [unsubscribedEmails, setUnsubscribedEmails] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
+    async function fetchUnsubscribed() {
+      try {
+        const response = await fetch('/api/unsubscribes')
+        if (response.ok) {
+          const records = (await response.json()) as UnsubscribedRecord[]
+          setUnsubscribedEmails(new Set(records.map((r) => r.sender_email)))
+        }
+      } catch (err) {
+        console.error('[SenderGrid] Error fetching unsubscribed:', err)
+      }
+    }
+    fetchUnsubscribed()
+  }, [])
 
   console.log('[SenderGrid] Initialized with onUnsubscribe:', !!onUnsubscribe)
 
@@ -88,7 +104,7 @@ export function SenderGrid({ senders, onUnsubscribe }: Props) {
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
       {senders
-        .filter((s) => !fadingOut.has(s.email))
+        .filter((s) => !fadingOut.has(s.email) && !unsubscribedEmails.has(s.email))
         .map((sender) => {
           const status = statuses[sender.email] || 'idle'
           const isDisabled = status === 'loading' || status === 'unsubscribed' || status === 'not_found'
