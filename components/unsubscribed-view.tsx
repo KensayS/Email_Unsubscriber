@@ -38,8 +38,9 @@ export function UnsubscribedView() {
 
   if (isLoading) {
     return (
-      <div className="w-full flex items-center justify-center py-12">
-        <div className="text-sm text-[#737373] dark:text-[#a3a3a3] animate-pulse">Loading unsubscribed senders…</div>
+      <div className="w-full flex flex-col items-center justify-center py-12 gap-3">
+        <div className="w-5 h-5 border-2 border-[#e5e5e5] dark:border-[#525252] border-t-[#1a1a1a] dark:border-t-[#e5e5e5] rounded-full animate-spin" />
+        <div className="text-sm text-[#737373] dark:text-[#a3a3a3]">Loading unsubscribed senders…</div>
       </div>
     )
   }

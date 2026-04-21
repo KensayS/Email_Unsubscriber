@@ -1,0 +1,29 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - heading "📧 Inbox Manager" [level=1] [ref=e5]
+        - generic [ref=e6]:
+          - combobox [ref=e7]:
+            - generic: 1 month
+            - img [ref=e8]
+          - button "Scan" [ref=e10]
+        - generic [ref=e11]:
+          - button "⚠️" [ref=e33]
+          - button "Sign out" [ref=e12]
+      - generic [ref=e40]:
+        - button "Scan Results (141)" [ref=e41]
+        - button "Unsubscribed (1)" [active] [ref=e42]
+    - main [ref=e13]:
+      - generic [ref=e1457]:
+        - generic [ref=e1458]:
+          - generic [ref=e1459]: Name
+          - generic [ref=e1460]: Email
+          - generic [ref=e1461]: Unsubscribed
+        - generic [ref=e1462]:
+          - generic [ref=e1464]: Nate Tucci Trading
+          - generic [ref=e1466]: NateTucci@e.prosperitypub.com
+          - generic [ref=e1468]: Apr 21, 2026
+  - button "Open Next.js Dev Tools" [ref=e25] [cursor=pointer]:
+    - img [ref=e26]
+  - alert [ref=e29]

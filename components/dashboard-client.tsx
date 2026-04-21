@@ -88,6 +88,7 @@ export function DashboardClient() {
                 console.error('[Dashboard] Error filtering unsubscribed senders:', err)
                 // Don't break UX, continue with unfiltered results
               }
+              setActiveTab('scan')
               setDone(true)
             } else if (event.type === 'error') {
               setError(event.message)

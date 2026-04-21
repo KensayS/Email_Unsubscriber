@@ -1,0 +1,15 @@
+[     429ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[     451ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[     569ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[     739ms] [LOG] [Fast Refresh] done in 278ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   32346ms] [LOG] [SenderGrid] Initialized with onUnsubscribe: true @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   32353ms] [LOG] [SenderGrid] Initialized with onUnsubscribe: true @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   32550ms] [LOG] [SenderGrid] Initialized with onUnsubscribe: true @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   32578ms] [LOG] [SenderGrid] Initialized with onUnsubscribe: true @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   32959ms] [LOG] [Dashboard] Filtered senders, removed 1 already unsubscribed @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   32977ms] [LOG] [SenderGrid] Initialized with onUnsubscribe: true @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   33008ms] [LOG] [SenderGrid] Initialized with onUnsubscribe: true @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   71031ms] [LOG] [UnsubscribedView] Fetching unsubscribed records... @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   71034ms] [LOG] [UnsubscribedView] Fetching unsubscribed records... @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   71255ms] [LOG] [UnsubscribedView] Fetched records: [Object] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   71421ms] [LOG] [UnsubscribedView] Fetched records: [Object] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
