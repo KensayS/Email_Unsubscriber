@@ -17,14 +17,14 @@ export default async function Home() {
       {/* Hero */}
       <div className="text-center max-w-lg mt-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="inline-block mb-6 px-4 py-2 rounded-full border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.1)] bg-[#f5f5f5] dark:bg-[#2d2d2d] text-[#525252] dark:text-[#a3a3a3] text-xs font-semibold tracking-wide uppercase opacity-80 hover:opacity-100 transition-opacity">
-          ✉ Inbox Cleaner
+          ✉ Stop Unwanted Emails
         </div>
         <h1 className="text-6xl md:text-7xl font-bold text-[#1a1a1a] dark:text-[#e5e5e5] tracking-tighter mb-4 leading-tight">
-          Inbox Zero,<br className="hidden sm:block" />
-          Finally.
+          Reclaim Your<br className="hidden sm:block" />
+          Inbox
         </h1>
         <p className="text-[#737373] dark:text-[#a3a3a3] text-lg md:text-xl mb-10 leading-relaxed max-w-md mx-auto">
-          Sign in with Gmail, see every mailing list you're on, and unsubscribe in one click. No data stored. Ever.
+          I'll scan your Gmail, show you every mailing list you're signed up for, and let you unsubscribe from all of them in seconds. One click per email. That's it.
         </p>
         <div className="transform hover:scale-105 transition-transform duration-200">
           <SignInButton />
@@ -33,7 +33,7 @@ export default async function Home() {
 
       {/* Mock preview */}
       <div className="w-full max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
-        <p className="text-center text-sm text-[#737373] dark:text-[#a3a3a3] mb-4 font-medium">See what you'll build</p>
+        <p className="text-center text-sm text-[#737373] dark:text-[#a3a3a3] mb-4 font-medium">Here's how it works</p>
         <div className="rounded-[12px] overflow-hidden shadow-lg dark:shadow-lg group hover:shadow-xl transition-all duration-300">
           <MockDashboard />
         </div>

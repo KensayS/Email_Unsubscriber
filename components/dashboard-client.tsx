@@ -5,17 +5,14 @@ import { signOut, useSession } from 'next-auth/react'
 import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { TimeframeSelect } from '@/components/timeframe-select'
-import { ViewModeSelect } from '@/components/view-mode-select'
 import { ThemeToggle } from '@/components/theme-toggle'
-import { SenderGrid } from '@/components/sender-grid'
 import { SenderListView } from '@/components/sender-list-view'
 import { UnsubscribedView } from '@/components/unsubscribed-view'
-import { SenderInfo, StreamEvent, Timeframe, ViewMode, UnsubscribeResult, UnsubscribedRecord } from '@/types'
+import { SenderInfo, StreamEvent, Timeframe, UnsubscribeResult, UnsubscribedRecord } from '@/types'
 
 export function DashboardClient() {
   const { data: session } = useSession()
   const [timeframe, setTimeframe] = useState<Timeframe>(1)
-  const [viewMode, setViewMode] = useState<ViewMode>('grid')
   const [activeTab, setActiveTab] = useState<'scan' | 'unsubscribed'>('scan')
   const [scanning, setScanning] = useState(false)
   const [senders, setSenders] = useState<SenderInfo[]>([])
@@ -187,30 +184,28 @@ export function DashboardClient() {
 
       {/* Header */}
       <header className="border-b border-border dark:border-border bg-background dark:bg-card transition-colors duration-300">
-        {/* Row 1: Title + Desktop Controls + Mobile Menu Toggle */}
+        {/* Main Header Row */}
         <div className="flex items-center gap-3 justify-between px-4 py-4 lg:px-8">
           <h1 className="font-bold text-xl text-[#1a1a1a] dark:text-[#e5e5e5] tracking-tight">📧 Email Unsubscriber</h1>
 
-          {/* Desktop Controls - Hidden on mobile */}
+          {/* Desktop Controls */}
           <div className="hidden md:flex items-center gap-2">
             <TimeframeSelect value={timeframe} onChange={setTimeframe} disabled={scanning} />
             <Button onClick={handleScan} disabled={scanning} size="sm">
               {scanning ? 'Scanning…' : 'Scan'}
             </Button>
-          </div>
-
-          {/* Desktop Right Controls - Hidden on mobile */}
-          <div className="hidden md:flex items-center gap-2">
-            {senders.length > 0 && activeTab === 'scan' && <ViewModeSelect value={viewMode} onChange={setViewMode} disabled={scanning} />}
             <ThemeToggle />
             <Button variant="outline" size="sm" onClick={() => signOut({ callbackUrl: '/' })} className="border-2 border-destructive hover:bg-destructive/5 text-destructive font-medium">
               Sign out
             </Button>
           </div>
 
-          {/* Mobile Menu Toggle - Hidden on desktop */}
+          {/* Mobile Controls - Always visible */}
           <div className="flex md:hidden items-center gap-2">
-            <ThemeToggle />
+            <TimeframeSelect value={timeframe} onChange={setTimeframe} disabled={scanning} />
+            <Button onClick={handleScan} disabled={scanning} size="sm">
+              {scanning ? 'Scanning…' : 'Scan'}
+            </Button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg hover:bg-secondary transition-colors"
@@ -225,27 +220,26 @@ export function DashboardClient() {
           </div>
         </div>
 
-        {/* Row 2: Mobile Menu - Only visible when mobileMenuOpen */}
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-border px-4 py-3 space-y-3">
-            <div className="space-y-2">
-              <TimeframeSelect value={timeframe} onChange={setTimeframe} disabled={scanning} />
-              <Button onClick={handleScan} disabled={scanning} size="sm" className="w-full">
-                {scanning ? 'Scanning…' : 'Scan'}
-              </Button>
+        {/* Mobile Menu Dropdown - Animated slide down */}
+        <div
+          className={`md:hidden overflow-hidden border-t border-border transition-all duration-300 ease-out ${
+            mobileMenuOpen ? 'max-h-32 opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <div className="px-4 py-3 space-y-3">
+            <div className="flex items-center gap-2 justify-between">
+              <span className="text-sm font-medium text-foreground">Theme</span>
+              <ThemeToggle />
             </div>
-            {senders.length > 0 && activeTab === 'scan' && (
-              <ViewModeSelect value={viewMode} onChange={setViewMode} disabled={scanning} />
-            )}
             <Button variant="outline" size="sm" onClick={() => signOut({ callbackUrl: '/' })} className="w-full border-2 border-destructive hover:bg-destructive/5 text-destructive font-medium">
               Sign out
             </Button>
           </div>
-        )}
+        </div>
 
         {/* Tab Switcher - only show when senders exist */}
         {senders.length > 0 && (
-          <div className="flex items-center gap-2 px-4 py-3 -mx-4 -mb-3 border-t border-border">
+          <div className="flex items-center gap-2 px-4 py-3 border-t border-border">
             <button
               onClick={() => setActiveTab('scan')}
               className={`px-4 py-2 rounded-full font-medium text-sm transition-colors ${
@@ -304,20 +298,10 @@ export function DashboardClient() {
 
         {/* Scan Results Tab */}
         {activeTab === 'scan' && senders.length > 0 && (
-          <>
-            {viewMode === 'grid' && (
-              <SenderGrid
-                senders={senders}
-                onUnsubscribe={handleUnsubscribe}
-              />
-            )}
-            {viewMode === 'list' && (
-              <SenderListView
-                senders={senders}
-                onUnsubscribe={handleUnsubscribe}
-              />
-            )}
-          </>
+          <SenderListView
+            senders={senders}
+            onUnsubscribe={handleUnsubscribe}
+          />
         )}
 
         {/* Unsubscribed Tab */}
