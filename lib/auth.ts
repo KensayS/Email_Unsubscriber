@@ -44,22 +44,10 @@ export const authOptions: NextAuthOptions = {
       return session
     },
     async redirect({ url, baseUrl }) {
-      console.log('[NextAuth] Redirect callback called:')
-      console.log('  url:', url)
-      console.log('  baseUrl:', baseUrl)
-      console.log('  url.startsWith("/")?', url.startsWith('/'))
-
-      // Always redirect to dashboard after login
-      if (url === '/') {
-        console.log('  → redirecting to dashboard (url was /)')
-        return baseUrl + '/dashboard'
-      }
-      if (url.startsWith('/')) {
-        console.log('  → returning url as-is (relative path)')
-        return url
-      }
-      console.log('  → redirecting to dashboard (fallback)')
-      return baseUrl + '/dashboard'
+      console.log('[NextAuth] Redirect callback - input url:', url)
+      const finalUrl = baseUrl + '/dashboard'
+      console.log('[NextAuth] Redirect callback - returning:', finalUrl)
+      return finalUrl
     },
   },
   session: {
