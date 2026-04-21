@@ -41,11 +41,47 @@ Access token lives in the JWT session cookie only. Never sent to the browser. Re
 ### Types
 All shared types are in `types/index.ts`. NextAuth type extensions in `types/next-auth.d.ts`.
 
+## UI Components & Views
+- **Grid view:** Card layout, responsive (1 col mobile → 3 cols desktop), shows subject snippets
+- **List view:** Table with sender details modal, better for large lists
+- **Toggle:** Visible when senders exist, switches between Grid and List
+- **Status messages:** Idle, Loading, Unsubscribed, Already Unsubscribed, Open link, Finish in new tab, Not found
+
+Implemented in `components/sender-grid.tsx` and `components/sender-list-view.tsx`.
+
+## Unsubscribe Status Flow
+Button state transitions (managed in component state):
+1. `idle` — default, clickable "Unsubscribe" button
+2. `loading` — in-progress, disabled "Unsubscribing…"
+3. Result status — disables button, shows outcome (unsubscribed, already_unsubscribed, open_link, finish_in_new_tab, not_found)
+
+URLs are stored separately and opened when status is `open_link` or `finish_in_new_tab`.
+
+## Gmail Query & Filtering
+- **Query:** `list:* after:YYYY/MM/DD` (finds mailing lists across all Gmail categories)
+- **Date format:** YYYY/MM/DD, not Unix timestamp (Gmail API requirement)
+- **Minimum count:** Only returns senders with 2+ emails (filters one-off promotional emails)
+- **Header check:** Confirms `List-Unsubscribe` header present on each email
+
+Implemented in `lib/gmail.ts` → `fetchSenders()`.
+
+## Timeframe Selection
+Scan can search 1 or 3 months of emails. 3-month scans take significantly longer—warning shown in UI.
+
+## Warning Alerts
+Two dismissible alerts in the UI (minimizable to ⚠️ icon in header):
+1. **Session persistence:** Unsubscription is permanent in Gmail, but scan results are not stored (session-only, no database)
+2. **3-month warning:** Appears when timeframe ≥ 3 months, advises starting with 1 month for faster results
+
+Implemented in `components/dashboard-client.tsx`.
+
 ## Running Locally
 ```bash
 npm run dev      # http://localhost:3000
 npm test         # run all Jest tests
+npm run lint     # run ESLint
 npm run build    # production build check
+npm start        # production server
 ```
 
 ## Deploying to Vercel
