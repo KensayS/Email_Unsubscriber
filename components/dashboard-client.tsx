@@ -1,17 +1,20 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { TimeframeSelect } from '@/components/timeframe-select'
 import { ViewModeSelect } from '@/components/view-mode-select'
 import { SenderGrid } from '@/components/sender-grid'
 import { SenderListView } from '@/components/sender-list-view'
-import { SenderInfo, StreamEvent, Timeframe, ViewMode, UnsubscribeResult } from '@/types'
+import { UnsubscribedView } from '@/components/unsubscribed-view'
+import { SenderInfo, StreamEvent, Timeframe, ViewMode, UnsubscribeResult, UnsubscribedRecord } from '@/types'
 
 export function DashboardClient() {
+  const { data: session } = useSession()
   const [timeframe, setTimeframe] = useState<Timeframe>(1)
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
+  const [activeTab, setActiveTab] = useState<'scan' | 'unsubscribed'>('scan')
   const [scanning, setScanning] = useState(false)
   const [senders, setSenders] = useState<SenderInfo[]>([])
   const [done, setDone] = useState(false)
@@ -53,6 +56,21 @@ export function DashboardClient() {
                 return next.sort((a, b) => b.count - a.count)
               })
             } else if (event.type === 'done') {
+              // Fetch and filter unsubscribed senders
+              try {
+                const unsubscribedRes = await fetch('/api/unsubscribes')
+                if (unsubscribedRes.ok) {
+                  const unsubscribes = (await unsubscribedRes.json()) as UnsubscribedRecord[]
+                  const unsubscribedEmails = new Set(unsubscribes.map((r) => r.sender_email))
+                  setSenders((prev) => prev.filter((s) => !unsubscribedEmails.has(s.email)))
+                  console.log('[Dashboard] Filtered senders, removed', unsubscribes.length, 'already unsubscribed')
+                } else {
+                  console.error('[Dashboard] Failed to fetch unsubscribes:', unsubscribedRes.statusText)
+                }
+              } catch (err) {
+                console.error('[Dashboard] Error filtering unsubscribed senders:', err)
+                // Don't break UX, continue with unfiltered results
+              }
               setDone(true)
             } else if (event.type === 'error') {
               setError(event.message)
@@ -106,29 +124,57 @@ export function DashboardClient() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b px-4 py-4 lg:px-8 flex items-center gap-3 justify-between flex-wrap">
-        <h1 className="font-bold text-lg">Email Unsubscriber</h1>
-        <div className="flex items-center gap-2 flex-wrap">
-          <TimeframeSelect value={timeframe} onChange={setTimeframe} disabled={scanning} />
-          <Button onClick={handleScan} disabled={scanning} size="sm">
-            {scanning ? 'Scanning…' : 'Scan'}
-          </Button>
+      <header className="border-b px-4 py-4 lg:px-8">
+        <div className="flex items-center gap-3 justify-between flex-wrap mb-3">
+          <h1 className="font-bold text-lg">Email Unsubscriber</h1>
+          <div className="flex items-center gap-2 flex-wrap">
+            <TimeframeSelect value={timeframe} onChange={setTimeframe} disabled={scanning} />
+            <Button onClick={handleScan} disabled={scanning} size="sm">
+              {scanning ? 'Scanning…' : 'Scan'}
+            </Button>
+          </div>
+          <div className="flex items-center gap-2">
+            {warningsMinimized && (
+              <button
+                onClick={() => setWarningsMinimized(false)}
+                className="text-xl hover:opacity-70 transition-opacity"
+                title="Show warnings"
+              >
+                ⚠️
+              </button>
+            )}
+            {senders.length > 0 && activeTab === 'scan' && <ViewModeSelect value={viewMode} onChange={setViewMode} disabled={scanning} />}
+            <Button variant="ghost" size="sm" onClick={() => signOut({ callbackUrl: '/' })}>
+              Sign out
+            </Button>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          {warningsMinimized && (
+
+        {/* Tab Switcher - only show when senders exist */}
+        {senders.length > 0 && (
+          <div className="flex items-center gap-4 border-t pt-3 -mx-4 -mb-4 px-4">
             <button
-              onClick={() => setWarningsMinimized(false)}
-              className="text-xl hover:opacity-70 transition-opacity"
-              title="Show warnings"
+              onClick={() => setActiveTab('scan')}
+              className={`pb-3 font-medium text-sm transition-colors ${
+                activeTab === 'scan'
+                  ? 'text-foreground border-b-2 border-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
             >
-              ⚠️
+              Scan Results ({senders.length})
             </button>
-          )}
-          {senders.length > 0 && <ViewModeSelect value={viewMode} onChange={setViewMode} disabled={scanning} />}
-          <Button variant="ghost" size="sm" onClick={() => signOut({ callbackUrl: '/' })}>
-            Sign out
-          </Button>
-        </div>
+            <button
+              onClick={() => setActiveTab('unsubscribed')}
+              className={`pb-3 font-medium text-sm transition-colors ${
+                activeTab === 'unsubscribed'
+                  ? 'text-foreground border-b-2 border-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Unsubscribed
+            </button>
+          </div>
+        )}
       </header>
 
       {/* Content */}
@@ -189,7 +235,8 @@ export function DashboardClient() {
           </p>
         )}
 
-        {senders.length > 0 && (
+        {/* Scan Results Tab */}
+        {activeTab === 'scan' && senders.length > 0 && (
           <>
             {viewMode === 'grid' && (
               <SenderGrid
@@ -204,6 +251,11 @@ export function DashboardClient() {
               />
             )}
           </>
+        )}
+
+        {/* Unsubscribed Tab */}
+        {activeTab === 'unsubscribed' && session && (
+          <UnsubscribedView />
         )}
       </main>
     </div>
