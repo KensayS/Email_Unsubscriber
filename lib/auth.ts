@@ -51,7 +51,7 @@ export const authOptions: NextAuthOptions = {
         sameSite: 'lax',
         path: '/',
         secure: process.env.NODE_ENV === 'production',
-        // No maxAge = session cookie (expires when browser closes)
+        maxAge: 55 * 60,
       },
     },
   },
