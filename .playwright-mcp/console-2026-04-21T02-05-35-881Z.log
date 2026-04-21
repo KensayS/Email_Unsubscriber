@@ -1,8 +1,0 @@
-[     252ms] Unexpected token '}'
-[     682ms] [LOG] false @ https://wiza.co/:3055
-[     683ms] [LOG] false @ https://wiza.co/:3055
-[     684ms] [LOG] false @ https://wiza.co/:3055
-[     684ms] [LOG] false @ https://wiza.co/:3055
-[     684ms] [LOG] false @ https://wiza.co/:3055
-[     685ms] [LOG] false @ https://wiza.co/:3055
-[    2317ms] [ERROR] Connecting to 'wss://nexus-websocket-a.intercom.io/pubsub/5-LTZQXjDXXWO7Rt5vDexexNqRJmL55Bh7_e-5jlvJS_kz4yvDXOAJOxQmXoa-d9Fb53EHiRH0E6R18Q-lgYvjTIGqHAGUuxugJOH4?X-Nexus-New-Client=true&X-Nexus-Version=0.18.7&user_role=visitor' violates the following Content Security Policy directive: "default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked. @ https://js.intercomcdn.com/vendor-modern.80eace52.js:1
