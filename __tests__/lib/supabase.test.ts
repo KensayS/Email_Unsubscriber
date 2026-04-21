@@ -1,6 +1,6 @@
 // Set up environment variables before importing the module
 process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co'
-process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-anon-key'
+process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = 'test-publishable-key'
 
 // Mock the supabase client before importing our module
 jest.mock('@supabase/supabase-js', () => ({

@@ -23,6 +23,27 @@ if (!supabaseUrl || !supabasePublishableKey) {
 export const supabase = createClient(supabaseUrl, supabasePublishableKey)
 
 /**
+ * Key Usage Documentation:
+ *
+ * NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY (client-side):
+ * - Used for client-side initialization of the Supabase client
+ * - Respects Row-Level Security (RLS) policies defined in the database
+ * - Safe to expose publicly as it's limited by RLS rules
+ * - Used for user-specific queries (e.g., fetching user's own unsubscribe records)
+ *
+ * SUPABASE_SECRET_KEY (server-side only, in .env):
+ * - Available in process.env for future admin/server-only operations if needed
+ * - Bypasses RLS policies - should only be used for authenticated server-side requests
+ * - Never expose this key to the client
+ * - Example use cases: admin operations, batch updates, migrations
+ *
+ * Current Implementation:
+ * - Uses publishable key which respects RLS policies
+ * - All operations are user-authenticated via google_user_id from session
+ * - Safe for production as RLS ensures users can only access their own data
+ */
+
+/**
  * Fetch all unsubscribed sender emails for a user
  * Returns a Set of emails for efficient lookup/filtering
  * Used to check if a sender has already been unsubscribed
