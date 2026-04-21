@@ -23,25 +23,42 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, account }) {
+      console.log('[NextAuth JWT] called with account:', !!account)
       if (account?.access_token) {
+        console.log('[NextAuth JWT] setting accessToken')
         token.accessToken = account.access_token
       }
       if (account?.providerAccountId) {
+        console.log('[NextAuth JWT] setting sub from providerId:', account.providerAccountId)
         token.sub = account.providerAccountId
       }
       return token
     },
     async session({ session, token }) {
+      console.log('[NextAuth Session] called')
       session.accessToken = token.accessToken
       if (token.sub) {
+        console.log('[NextAuth Session] setting user.id:', token.sub)
         session.user.id = token.sub
       }
       return session
     },
     async redirect({ url, baseUrl }) {
+      console.log('[NextAuth] Redirect callback called:')
+      console.log('  url:', url)
+      console.log('  baseUrl:', baseUrl)
+      console.log('  url.startsWith("/")?', url.startsWith('/'))
+
       // Always redirect to dashboard after login
-      if (url === '/') return baseUrl + '/dashboard'
-      if (url.startsWith('/')) return url
+      if (url === '/') {
+        console.log('  → redirecting to dashboard (url was /)')
+        return baseUrl + '/dashboard'
+      }
+      if (url.startsWith('/')) {
+        console.log('  → returning url as-is (relative path)')
+        return url
+      }
+      console.log('  → redirecting to dashboard (fallback)')
       return baseUrl + '/dashboard'
     },
   },
