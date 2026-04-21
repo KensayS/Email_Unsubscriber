@@ -26,10 +26,16 @@ export const authOptions: NextAuthOptions = {
       if (account?.access_token) {
         token.accessToken = account.access_token
       }
+      if (account?.providerAccountId) {
+        token.sub = account.providerAccountId
+      }
       return token
     },
     async session({ session, token }) {
       session.accessToken = token.accessToken
+      if (token.sub) {
+        session.user.id = token.sub
+      }
       return session
     },
   },
