@@ -185,7 +185,7 @@ export function DashboardClient() {
       {/* Header */}
       <header className="border-b border-border dark:border-border px-4 py-4 lg:px-8 bg-background dark:bg-card transition-colors duration-300">
         <div className="flex items-center gap-3 justify-between flex-wrap mb-3">
-          <h1 className="font-bold text-xl text-[#1a1a1a] dark:text-[#e5e5e5] tracking-tight">📧 Inbox Manager</h1>
+          <h1 className="font-bold text-xl text-[#1a1a1a] dark:text-[#e5e5e5] tracking-tight">📧 Email Unsubscriber</h1>
           <div className="flex items-center gap-2 flex-wrap">
             <TimeframeSelect value={timeframe} onChange={setTimeframe} disabled={scanning} />
             <Button onClick={handleScan} disabled={scanning} size="sm">
