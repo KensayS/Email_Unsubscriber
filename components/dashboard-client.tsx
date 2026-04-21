@@ -193,7 +193,7 @@ export function DashboardClient() {
 
       {/* Right Sidebar Menu - Glassmorphism with Rows Layout */}
       <div
-        className={`fixed right-0 top-0 h-screen w-64 md:hidden backdrop-blur-xl transition-transform duration-500 ease-out flex flex-col items-start justify-start pt-6 border-l border-white/10 overflow-y-auto ${
+        className={`fixed right-0 top-[73px] bottom-0 w-64 md:hidden backdrop-blur-xl transition-transform duration-500 ease-out flex flex-col items-start justify-start border-l border-white/10 overflow-y-auto ${
           mobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
         }`}
         style={{
