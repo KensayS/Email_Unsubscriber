@@ -5,28 +5,53 @@ import { useEffect, useState } from 'react'
 export function ThemeToggle() {
   const [isDark, setIsDark] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
 
   useEffect(() => {
     setMounted(true)
     const stored = localStorage.getItem('theme')
     const isDarkMode = stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)
     setIsDark(isDarkMode)
-    updateTheme(isDarkMode)
+    updateTheme(isDarkMode, false)
   }, [])
 
-  const updateTheme = (dark: boolean) => {
+  const updateTheme = (dark: boolean, animate: boolean = true) => {
+    if (animate) {
+      // Disable transitions during theme switch for instant color change
+      document.documentElement.style.pointerEvents = 'none'
+      document.querySelectorAll('*').forEach((el) => {
+        (el as HTMLElement).style.transition = 'none'
+      })
+
+      // Add fade animation to entire page
+      document.documentElement.classList.add('animate-page-fade')
+      setIsAnimating(true)
+    }
+
     if (dark) {
       document.documentElement.classList.add('dark')
     } else {
       document.documentElement.classList.remove('dark')
     }
     localStorage.setItem('theme', dark ? 'dark' : 'light')
+
+    if (animate) {
+      // Re-enable transitions after animation completes
+      setTimeout(() => {
+        document.querySelectorAll('*').forEach((el) => {
+          (el as HTMLElement).style.transition = ''
+        })
+        document.documentElement.style.pointerEvents = ''
+        document.documentElement.classList.remove('animate-page-fade')
+        setIsAnimating(false)
+      }, 400)
+    }
   }
 
   const toggle = () => {
     const newDark = !isDark
     setIsDark(newDark)
-    updateTheme(newDark)
+    updateTheme(newDark, true)
   }
 
   if (!mounted) return null
@@ -36,7 +61,9 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      className="relative inline-flex h-8 w-14 items-center rounded-full bg-muted border border-border hover:bg-secondary transition-colors duration-200"
+      className={`relative inline-flex h-8 w-14 items-center rounded-full bg-muted border border-border hover:bg-secondary transition-colors duration-200 ${
+        isAnimating ? 'animate-theme-toggle' : ''
+      }`}
       title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
     >
       <div className="absolute inset-0 flex items-center justify-between px-1.5 pointer-events-none">

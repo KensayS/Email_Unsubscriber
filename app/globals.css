@@ -224,3 +224,36 @@
 .duration-1000 {
   animation-duration: 1s;
 }
+
+/* Theme toggle animation */
+@keyframes theme-toggle-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes page-fade {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-theme-toggle {
+  animation: theme-toggle-rotate 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+html.animate-page-fade {
+  animation: page-fade 0.4s ease-out;
+}
