@@ -39,15 +39,15 @@ export function UnsubscribedView() {
   if (isLoading) {
     return (
       <div className="w-full flex items-center justify-center py-12">
-        <div className="text-sm text-[#9491a1] dark:text-[#b8a7d6] animate-pulse">Loading unsubscribed senders…</div>
+        <div className="text-sm text-[#737373] dark:text-[#a3a3a3] animate-pulse">Loading unsubscribed senders…</div>
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="w-full rounded-lg border border-[rgba(38,17,74,0.12)] dark:border-[rgba(167,139,250,0.15)] bg-[#f5f0ff] dark:bg-[#2d1b4e] p-4">
-        <div className="text-sm text-[#26114a] dark:text-[#c084fc]">Error loading unsubscribes: {error}</div>
+      <div className="w-full rounded-lg border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.1)] bg-[#f5f5f5] dark:bg-[#2d2d2d] p-4">
+        <div className="text-sm text-[#1a1a1a] dark:text-[#e5e5e5]">Error loading unsubscribes: {error}</div>
       </div>
     )
   }
@@ -55,16 +55,16 @@ export function UnsubscribedView() {
   if (records.length === 0) {
     return (
       <div className="w-full flex items-center justify-center py-12">
-        <div className="text-sm text-[#9491a1] dark:text-[#b8a7d6]">✓ All clean! No unsubscribes yet</div>
+        <div className="text-sm text-[#737373] dark:text-[#a3a3a3]">✓ All clean! No unsubscribes yet</div>
       </div>
     )
   }
 
   return (
-    <div className="w-full rounded-lg border border-[rgba(38,17,74,0.08)] dark:border-[rgba(167,139,250,0.15)] bg-white dark:bg-[#1a1428] overflow-hidden shadow-sm dark:shadow-lg dark:shadow-[#7e43ff]/10 transition-all duration-300">
-      <div className="divide-y divide-[rgba(38,17,74,0.08)] dark:divide-[rgba(167,139,250,0.15)]">
+    <div className="w-full rounded-lg border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.1)] bg-white dark:bg-[#1a1a1a] overflow-hidden shadow-sm dark:shadow-sm transition-all duration-300">
+      <div className="divide-y divide-[rgba(0,0,0,0.08)] dark:divide-[rgba(255,255,255,0.1)]">
         {/* Header - hidden on mobile */}
-        <div className="hidden md:grid grid-cols-12 gap-2 bg-[#f5f0ff] dark:bg-[#2d1b4e] px-4 py-3 font-semibold text-xs uppercase tracking-wide text-[#26114a] dark:text-[#c084fc] h-12 items-center transition-colors duration-300">
+        <div className="hidden md:grid grid-cols-12 gap-2 bg-[#f5f5f5] dark:bg-[#2d2d2d] px-4 py-3 font-semibold text-xs uppercase tracking-wide text-[#525252] dark:text-[#a3a3a3] h-12 items-center transition-colors duration-300">
           <div className="col-span-4">Name</div>
           <div className="col-span-4">Email</div>
           <div className="col-span-4 text-right">Unsubscribed</div>
@@ -74,24 +74,24 @@ export function UnsubscribedView() {
         {records.map((record) => (
           <div
             key={record.id}
-            className="group grid grid-cols-12 gap-2 px-4 py-3 hover:bg-[#f5f0ff] dark:hover:bg-[#2d1b4e] transition-colors items-center md:h-14"
+            className="group grid grid-cols-12 gap-2 px-4 py-3 hover:bg-[#f5f5f5] dark:hover:bg-[#2d2d2d] transition-colors items-center md:h-14"
           >
             {/* Name - full width on mobile, 4 cols on desktop */}
             <div className="col-span-12 md:col-span-4 min-w-0">
-              <div className="font-semibold text-sm text-[#26114a] dark:text-[#f5f3ff] truncate group-hover:text-[#7e43ff] dark:group-hover:text-[#c084fc] transition-colors">{record.sender_name}</div>
-              <div className="text-xs text-[#9491a1] dark:text-[#b8a7d6] truncate md:hidden">
+              <div className="font-semibold text-sm text-[#1a1a1a] dark:text-[#e5e5e5] truncate group-hover:text-[#6b5b95] dark:group-hover:text-[#8b7bb8] transition-colors">{record.sender_name}</div>
+              <div className="text-xs text-[#737373] dark:text-[#a3a3a3] truncate md:hidden">
                 {record.sender_email}
               </div>
             </div>
 
             {/* Email - hidden on mobile */}
             <div className="hidden md:block md:col-span-4 min-w-0">
-              <div className="text-sm text-[#9491a1] dark:text-[#b8a7d6] truncate">{record.sender_email}</div>
+              <div className="text-sm text-[#737373] dark:text-[#a3a3a3] truncate">{record.sender_email}</div>
             </div>
 
             {/* Unsubscribed Date */}
             <div className="col-span-12 md:col-span-4 text-right">
-              <Badge className="text-xs bg-[#e4d8fd] dark:bg-[#7e43ff]/30 text-[#26114a] dark:text-[#c084fc] font-medium">
+              <Badge className="text-xs bg-[#e5e5e5] dark:bg-[#2d2d2d] text-[#1a1a1a] dark:text-[#e5e5e5] font-medium">
                 {new Date(record.unsubscribed_at).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'short',

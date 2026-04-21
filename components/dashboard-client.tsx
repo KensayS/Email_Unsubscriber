@@ -141,11 +141,11 @@ export function DashboardClient() {
   }
 
   return (
-    <div className="min-h-screen bg-background dark:bg-[#0f0a1a] transition-colors duration-300">
+    <div className="min-h-screen bg-background dark:bg-[#0f0f0f] transition-colors duration-300">
       {/* Scan Progress Bar */}
       {scanning && (
         <div
-          className="h-1.5 bg-gradient-to-r from-[#7e43ff] via-[#c084fc] to-[#7e43ff] relative overflow-hidden shadow-lg shadow-[#7e43ff]/50"
+          className="h-1.5 bg-[#6b5b95] relative overflow-hidden shadow-lg"
           style={{
             animation: 'indeterminate-progress 2s ease-in-out infinite',
           }}
@@ -161,9 +161,9 @@ export function DashboardClient() {
       )}
 
       {/* Header */}
-      <header className="border-b border-[rgba(38,17,74,0.08)] dark:border-[rgba(167,139,250,0.15)] px-4 py-4 lg:px-8 bg-white dark:bg-[#1a1428] transition-colors duration-300">
+      <header className="border-b border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.1)] px-4 py-4 lg:px-8 bg-white dark:bg-[#1a1a1a] transition-colors duration-300">
         <div className="flex items-center gap-3 justify-between flex-wrap mb-3">
-          <h1 className="font-bold text-xl text-[#26114a] dark:text-[#f5f3ff] tracking-tight">📧 Inbox Manager</h1>
+          <h1 className="font-bold text-xl text-[#1a1a1a] dark:text-[#e5e5e5] tracking-tight">📧 Inbox Manager</h1>
           <div className="flex items-center gap-2 flex-wrap">
             <TimeframeSelect value={timeframe} onChange={setTimeframe} disabled={scanning} />
             <Button onClick={handleScan} disabled={scanning} size="sm">
@@ -194,8 +194,8 @@ export function DashboardClient() {
               onClick={() => setActiveTab('scan')}
               className={`px-4 py-2 rounded-full font-medium text-sm transition-colors ${
                 activeTab === 'scan'
-                  ? 'bg-[#26114a] text-white'
-                  : 'text-[#9491a1] hover:text-[#26114a]'
+                  ? 'bg-[#1a1a1a] text-white dark:bg-[#d4d4d4] dark:text-[#0f0f0f]'
+                  : 'text-[#737373] dark:text-[#a3a3a3] hover:text-[#1a1a1a] dark:hover:text-[#e5e5e5]'
               }`}
             >
               Scan Results ({senders.length})
@@ -204,8 +204,8 @@ export function DashboardClient() {
               onClick={() => setActiveTab('unsubscribed')}
               className={`px-4 py-2 rounded-full font-medium text-sm transition-colors ${
                 activeTab === 'unsubscribed'
-                  ? 'bg-[#26114a] text-white'
-                  : 'text-[#9491a1] hover:text-[#26114a]'
+                  ? 'bg-[#1a1a1a] text-white dark:bg-[#d4d4d4] dark:text-[#0f0f0f]'
+                  : 'text-[#737373] dark:text-[#a3a3a3] hover:text-[#1a1a1a] dark:hover:text-[#e5e5e5]'
               }`}
             >
               Unsubscribed
@@ -217,13 +217,13 @@ export function DashboardClient() {
       {/* Content */}
       <main className="w-full px-4 py-6 space-y-3 lg:px-8">
         {!warningsMinimized && (
-          <div className="rounded-lg bg-[#f5f0ff] border border-[rgba(38,17,74,0.12)] p-3 text-sm text-[#26114a] flex items-start gap-3">
+          <div className="rounded-lg bg-[#f5f5f5] dark:bg-[#2d2d2d] border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.1)] p-3 text-sm text-[#1a1a1a] dark:text-[#e5e5e5] flex items-start gap-3">
             <div className="flex-1">
               <strong>Note:</strong> Unsubscription is permanent in your inbox. Scans are saved per session, but synced across browser tabs with your account.
             </div>
             <button
               onClick={() => setWarningsMinimized(true)}
-              className="text-[#26114a] hover:opacity-70 transition-opacity flex-shrink-0 text-lg"
+              className="text-[#1a1a1a] dark:text-[#e5e5e5] hover:opacity-70 transition-opacity flex-shrink-0 text-lg"
               title="Dismiss"
             >
               ✕
@@ -233,8 +233,8 @@ export function DashboardClient() {
 
         {/* Stats bar - shown after scan completes */}
         {done && senders.length > 0 && activeTab === 'scan' && (
-          <p className="text-sm text-[#9491a1] text-center py-2">
-            Found <strong className="text-[#26114a]">{senders.length}</strong> mailing lists
+          <p className="text-sm text-[#737373] dark:text-[#a3a3a3] text-center py-2">
+            Found <strong className="text-[#1a1a1a] dark:text-[#e5e5e5]">{senders.length}</strong> mailing lists
           </p>
         )}
 
@@ -243,19 +243,19 @@ export function DashboardClient() {
         )}
 
         {!scanning && senders.length === 0 && !done && !error && (
-          <p className="text-muted-foreground text-center py-12">
+          <p className="text-[#737373] dark:text-[#a3a3a3] text-center py-12">
             Select a timeframe and click <strong>Scan</strong> to find your mailing lists.
           </p>
         )}
 
         {scanning && senders.length === 0 && (
-          <p className="text-muted-foreground text-center py-12 animate-pulse">
+          <p className="text-[#737373] dark:text-[#a3a3a3] text-center py-12 animate-pulse">
             Scanning your inbox…
           </p>
         )}
 
         {done && senders.length === 0 && (
-          <p className="text-muted-foreground text-center py-12">
+          <p className="text-[#737373] dark:text-[#a3a3a3] text-center py-12">
             No mailing lists found in the selected timeframe.
           </p>
         )}

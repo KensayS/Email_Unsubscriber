@@ -1,0 +1,533 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic:
+      - banner:
+        - generic [ref=e3]:
+          - generic [ref=e4]:
+            - link "home" [ref=e5] [cursor=pointer]:
+              - /url: /
+              - img [ref=e7]
+            - navigation [ref=e10]:
+              - list [ref=e12]:
+                - listitem [ref=e13]:
+                  - button "Solutions" [ref=e15] [cursor=pointer]:
+                    - generic [ref=e16]: Solutions
+                - listitem [ref=e17]:
+                  - button "Resources" [ref=e19] [cursor=pointer]:
+                    - generic [ref=e20]: Resources
+                - listitem [ref=e21]:
+                  - link "Enterprise" [ref=e22] [cursor=pointer]:
+                    - /url: /enterprise
+                    - generic [ref=e23]: Enterprise
+                - listitem [ref=e24]:
+                  - link "Pricing" [ref=e25] [cursor=pointer]:
+                    - /url: /pricing
+                    - generic [ref=e26]: Pricing
+          - generic [ref=e27]:
+            - generic [ref=e28]:
+              - link "Log in" [ref=e30] [cursor=pointer]:
+                - /url: /auth/login
+                - generic [ref=e31]: Log in
+              - generic [ref=e32]: Log in
+            - generic [ref=e33]:
+              - link "Sign up" [ref=e35] [cursor=pointer]:
+                - /url: /auth/signup
+                - generic [ref=e36]: Sign up
+              - generic [ref=e37]: Sign up
+    - main [ref=e38]:
+      - generic [ref=e96]:
+        - generic [ref=e98]:
+          - generic [ref=e100]:
+            - img [ref=e103]
+            - paragraph [ref=e108]: Transparent pricing
+          - heading "Individual Plans" [level=1] [ref=e110]
+          - paragraph [ref=e112]: Receive unlimited credits when you pay yearly, and save on your plan.
+        - generic [ref=e113]:
+          - generic [ref=e115]:
+            - generic [ref=e116] [cursor=pointer]:
+              - generic [ref=e117]: Bill annually
+              - generic [ref=e119]: Unlimited
+            - generic [ref=e123] [cursor=pointer]: Bill monthly
+          - generic [ref=e124]:
+            - generic [ref=e127]:
+              - generic [ref=e130]:
+                - generic [ref=e131]:
+                  - generic [ref=e132]:
+                    - heading "Free" [level=2] [ref=e133]
+                    - generic [ref=e134]: Great for occasional prospecting.
+                  - generic [ref=e135]:
+                    - generic [ref=e136]: $0
+                    - generic [ref=e137]:
+                      - text: per month, per user.
+                      - text: "*billed at $0 per year."
+                  - generic [ref=e139]:
+                    - link "Get started" [ref=e141] [cursor=pointer]:
+                      - /url: https://wiza.co/auth/signup
+                      - generic [ref=e142]: Get started
+                    - generic [ref=e143]: Get started
+                - img [ref=e145]
+                - generic [ref=e149]:
+                  - generic [ref=e150]: "What’s included:"
+                  - generic [ref=e151]:
+                    - img [ref=e152]
+                    - generic [ref=e155]: 20 emails per month
+                  - generic [ref=e156]:
+                    - img [ref=e157]
+                    - generic [ref=e160]: 5 phone numbers per month
+              - generic [ref=e164]:
+                - generic [ref=e165]:
+                  - generic [ref=e166]:
+                    - heading "Email" [level=2] [ref=e167]
+                    - generic [ref=e168]: For those looking for just email data.
+                  - generic [ref=e169]:
+                    - generic [ref=e170]: $83
+                    - generic [ref=e171]:
+                      - text: per month, per user.
+                      - text: "*billed at $990 per year."
+                  - generic [ref=e173]:
+                    - link "Get started" [ref=e175] [cursor=pointer]:
+                      - /url: https://wiza.co/auth/signup
+                      - generic [ref=e176]: Get started
+                    - generic [ref=e177]: Get started
+                - img [ref=e179]
+                - generic [ref=e183]:
+                  - generic [ref=e184]: "What’s included:"
+                  - generic [ref=e185]:
+                    - img [ref=e186]
+                    - generic [ref=e189]: 🪄 Unlimited emails
+                  - generic [ref=e190]:
+                    - img [ref=e191]
+                    - generic [ref=e194]: $0.35 per phone number
+                  - generic [ref=e195]:
+                    - img [ref=e196]
+                    - generic [ref=e199]: 30,000 exports per year
+                  - generic [ref=e200]:
+                    - img [ref=e201]
+                    - generic [ref=e204]: AI Research
+                  - generic [ref=e205]:
+                    - img [ref=e206]
+                    - generic [ref=e209]: CRM Integrations
+              - generic [ref=e213]:
+                - generic [ref=e214]:
+                  - generic [ref=e215]:
+                    - heading "Email + Phone" [level=2] [ref=e216]
+                    - generic [ref=e217]: For those that hit the phones!
+                  - generic [ref=e218]:
+                    - generic [ref=e219]: $166
+                    - generic [ref=e220]:
+                      - text: per month, per user.
+                      - text: "*billed at $1990 per year."
+                  - generic [ref=e222]:
+                    - link "Get started" [ref=e224] [cursor=pointer]:
+                      - /url: https://wiza.co/auth/signup
+                      - generic [ref=e225]: Get started
+                    - generic [ref=e226]: Get started
+                - img [ref=e228]
+                - generic [ref=e232]:
+                  - generic [ref=e233]: "What’s included:"
+                  - generic [ref=e234]:
+                    - img [ref=e235]
+                    - generic [ref=e238]: 🪄 Unlimited emails
+                  - generic [ref=e239]:
+                    - img [ref=e240]
+                    - generic [ref=e243]: 🪄 Unlimited phone numbers
+                  - generic [ref=e244]:
+                    - img [ref=e245]
+                    - generic [ref=e248]: 30,000 exports per year
+                  - generic [ref=e249]:
+                    - img [ref=e250]
+                    - generic [ref=e253]: AI Research
+                  - generic [ref=e254]:
+                    - img [ref=e255]
+                    - generic [ref=e258]: CRM Integrations
+            - generic [ref=e260]:
+              - generic [ref=e262]:
+                - heading "Team Plan" [level=2] [ref=e264]
+                - generic [ref=e265]:
+                  - generic [ref=e266]: Starting at $449/mo
+                  - generic [ref=e267]: Billed annually
+                - generic [ref=e268]:
+                  - link "Contact sales" [ref=e270] [cursor=pointer]:
+                    - /url: /book-demo
+                    - generic [ref=e271]: Contact sales
+                  - generic [ref=e272]: Contact sales
+              - generic [ref=e275]:
+                - generic [ref=e276]:
+                  - generic [ref=e277]:
+                    - img [ref=e278]
+                    - generic [ref=e281]: 3+ users
+                  - generic [ref=e282]:
+                    - img [ref=e283]
+                    - generic [ref=e286]: Unlimited emails
+                  - generic [ref=e287]:
+                    - img [ref=e288]
+                    - generic [ref=e291]: Unlimited phone numbers
+                  - generic [ref=e292]:
+                    - img [ref=e293]
+                    - generic [ref=e296]: CRM Integrations
+                  - generic [ref=e297]:
+                    - img [ref=e298]
+                    - generic [ref=e301]: Team Analytics
+                  - generic [ref=e302]:
+                    - img [ref=e303]
+                    - generic [ref=e306]: AI Research
+                - generic [ref=e308]:
+                  - generic [ref=e309]:
+                    - img [ref=e310]
+                    - generic [ref=e313]: Wiza Prospecting Platform
+                  - generic [ref=e314]:
+                    - img [ref=e315]
+                    - generic [ref=e318]: Advanced Fields
+                  - generic [ref=e319]:
+                    - img [ref=e320]
+                    - generic [ref=e323]: CSV Import
+                  - generic [ref=e324]:
+                    - img [ref=e325]
+                    - generic [ref=e328]: API Access
+                  - generic [ref=e329]:
+                    - img [ref=e330]
+                    - generic [ref=e333]: Dedicated Success Manager
+      - generic [ref=e338]:
+        - list [ref=e341]:
+          - listitem [ref=e342]
+          - listitem [ref=e344]
+          - listitem [ref=e346]
+          - listitem [ref=e348]
+          - listitem [ref=e350]
+          - listitem [ref=e352]
+        - generic [ref=e353]:
+          - img [ref=e355]
+          - generic [ref=e357]:
+            - link "4.6 5 Rating by G2 users" [ref=e358] [cursor=pointer]:
+              - /url: https://www.g2.com/products/wiza/reviews
+              - img [ref=e360]
+              - generic [ref=e365]:
+                - generic [ref=e366]:
+                  - generic [ref=e367]:
+                    - img [ref=e368]
+                    - generic [ref=e370]: "4.6"
+                  - generic [ref=e371]: "5"
+                - generic [ref=e372]: Rating by G2 users
+            - link "4.8 5 on Chrome Web Store" [ref=e374] [cursor=pointer]:
+              - /url: https://chrome.google.com/webstore/detail/wiza-find-contact-informa/pjmlkdacmaejhkdcflncbpcpidkggoio
+              - img [ref=e376]
+              - generic [ref=e388]:
+                - generic [ref=e389]:
+                  - generic [ref=e390]:
+                    - img [ref=e391]
+                    - generic [ref=e393]: "4.8"
+                  - generic [ref=e394]: "5"
+                - generic [ref=e395]: on Chrome Web Store
+          - img [ref=e397]
+      - generic [ref=e405]:
+        - generic [ref=e406]:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - img
+        - generic [ref=e470]:
+          - generic [ref=e472]:
+            - generic [ref=e474]:
+              - img [ref=e477]
+              - paragraph [ref=e480]: Wall of love
+            - heading "You're in good company" [level=2] [ref=e482]
+            - paragraph [ref=e484]: Don't just take our word for it—hear from our customers.
+            - img [ref=e486]
+          - generic [ref=e493]:
+            - button [ref=e494]:
+              - img [ref=e495]
+            - generic [ref=e498]:
+              - list:
+                - listitem [ref=e499]:
+                  - generic [ref=e500]:
+                    - generic [ref=e501]: “Before Wiza, our mobile connect and email reply rates were terrible. As soon as we made the switch, I was suddenly reaching several, target enterprise accounts.”
+                    - generic [ref=e504]:
+                      - generic [ref=e505]: Colin Mokhtary
+                      - generic [ref=e506]: Enterprise Account Director at Suzy
+                - listitem [ref=e507]:
+                  - generic [ref=e508]:
+                    - generic [ref=e509]: “Candidly speaking, Wiza is amazing. I'm not kidding when I say it's in the top three GTM tools I've ever used.”
+                    - generic [ref=e512]:
+                      - generic [ref=e513]: Jacob Nichols
+                      - generic [ref=e514]: Account Executive at SingleStore
+                - listitem [ref=e515]:
+                  - generic [ref=e516]:
+                    - generic [ref=e517]: “Wiza’s Chrome extension makes LinkedIn prospecting a breeze. Their mobile number accuracy is best-in-class, and their one-click export from LI Sales Nav saves me hours every week.”
+                    - generic [ref=e520]:
+                      - generic [ref=e521]: Fletcher Cox
+                      - generic [ref=e522]: Founder @ Ordesa AI
+                - listitem [ref=e523]:
+                  - generic [ref=e524]:
+                    - generic [ref=e525]: “Wiza changed the prospecting game for my company. At this point Wiza has paid for itself 100x over, and there’s really nothing more that I could ask for.”
+                    - generic [ref=e528]:
+                      - generic [ref=e529]: Drew White
+                      - generic [ref=e530]: Digital Sourcing Specialist, Aerotek
+                - listitem [ref=e531]:
+                  - generic [ref=e532]:
+                    - generic [ref=e533]: “Wiza helped our team scale 1:1 outreach for our ABM programs by providing an easy way to enrich contact data at target accounts in a few clicks.”
+                    - generic [ref=e536]:
+                      - generic [ref=e537]: Amber Stone
+                      - generic [ref=e538]: Head of Enterprise ABM, UserTesting
+                - listitem [ref=e539]:
+                  - generic [ref=e540]:
+                    - generic [ref=e541]: “Wiza allows us to export a search into a usable CSV which saves us a lot of time when setting up a new Sales email campaign.”
+                    - generic [ref=e544]:
+                      - generic [ref=e545]: Brendan McDonald
+                      - generic [ref=e546]: Data Operations at PartnerStack
+            - button [ref=e547] [cursor=pointer]:
+              - img [ref=e548]
+          - generic [ref=e551]:
+            - img [ref=e553]
+            - generic [ref=e560]:
+              - generic [ref=e561]:
+                - generic [ref=e562]:
+                  - generic [ref=e563]:
+                    - generic [ref=e564]:
+                      - generic [ref=e565]: "0"
+                      - generic [ref=e566]: "1"
+                      - generic [ref=e567]: "2"
+                      - generic [ref=e568]: "3"
+                      - generic [ref=e569]: "4"
+                      - generic [ref=e570]: "5"
+                      - generic [ref=e571]: "6"
+                      - generic [ref=e572]: "7"
+                      - generic [ref=e573]: "8"
+                      - generic [ref=e574]: "9"
+                    - generic [ref=e575]:
+                      - generic [ref=e576]: "0"
+                      - generic [ref=e577]: "1"
+                      - generic [ref=e578]: "2"
+                      - generic [ref=e579]: "3"
+                      - generic [ref=e580]: "4"
+                      - generic [ref=e581]: "5"
+                      - generic [ref=e582]: "6"
+                      - generic [ref=e583]: "7"
+                      - generic [ref=e584]: "8"
+                      - generic [ref=e585]: "9"
+                    - generic [ref=e586]:
+                      - generic [ref=e587]: "0"
+                      - generic [ref=e588]: "1"
+                      - generic [ref=e589]: "2"
+                      - generic [ref=e590]: "3"
+                      - generic [ref=e591]: "4"
+                      - generic [ref=e592]: "5"
+                      - generic [ref=e593]: "6"
+                      - generic [ref=e594]: "7"
+                      - generic [ref=e595]: "8"
+                      - generic [ref=e596]: "9"
+                  - generic [ref=e597]: "%"
+                - generic [ref=e598]: More demos
+              - generic [ref=e600]:
+                - generic [ref=e601]:
+                  - generic [ref=e603]:
+                    - generic [ref=e604]: "0"
+                    - generic [ref=e605]: "1"
+                    - generic [ref=e606]: "2"
+                    - generic [ref=e607]: "3"
+                    - generic [ref=e608]: "4"
+                    - generic [ref=e609]: "5"
+                    - generic [ref=e610]: "6"
+                    - generic [ref=e611]: "7"
+                    - generic [ref=e612]: "8"
+                    - generic [ref=e613]: "9"
+                  - generic [ref=e614]: x
+                - generic [ref=e615]: Faster prospecting
+              - generic [ref=e617]:
+                - generic [ref=e618]:
+                  - generic [ref=e620]:
+                    - generic [ref=e621]: "0"
+                    - generic [ref=e622]: "1"
+                    - generic [ref=e623]: "2"
+                    - generic [ref=e624]: "3"
+                    - generic [ref=e625]: "4"
+                    - generic [ref=e626]: "5"
+                    - generic [ref=e627]: "6"
+                    - generic [ref=e628]: "7"
+                    - generic [ref=e629]: "8"
+                    - generic [ref=e630]: "9"
+                  - generic [ref=e631]: x
+                - generic [ref=e632]: Less bounces
+      - generic [ref=e635]:
+        - generic [ref=e636]:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - img
+        - generic [ref=e694]:
+          - generic [ref=e696]:
+            - img [ref=e699]
+            - paragraph [ref=e704]: Empower your sales
+          - paragraph [ref=e706]: Join for free today
+          - paragraph [ref=e708]: Supercharge your team with a best-in-class prospecting platform.
+          - generic [ref=e710]:
+            - generic [ref=e711]:
+              - img [ref=e714]
+              - generic [ref=e716]: 25 free credits
+            - generic [ref=e718]:
+              - img [ref=e721]
+              - generic [ref=e723]: No credit card required
+          - img [ref=e725]
+          - generic [ref=e732]:
+            - textbox [ref=e735]:
+              - /placeholder: Work email
+            - generic [ref=e736]:
+              - button "Create account" [ref=e738] [cursor=pointer]:
+                - generic [ref=e739]: Create account
+              - generic [ref=e740]: Create account
+    - contentinfo [ref=e743]:
+      - heading "Footer" [level=2] [ref=e744]
+      - navigation [ref=e746]:
+        - generic [ref=e747]:
+          - generic [ref=e748]:
+            - link "Go to the homepage" [ref=e749] [cursor=pointer]:
+              - /url: /
+              - img [ref=e750]
+            - generic [ref=e753]: The future of prospecting © 2026 Wiza
+          - generic [ref=e754]: Wiza is a sales prospecting & engagement platform.
+        - img [ref=e758]
+        - generic [ref=e764]:
+          - generic [ref=e765]:
+            - link "hello@wiza.co" [ref=e766] [cursor=pointer]:
+              - /url: mailto:hello@wiza.co
+              - img [ref=e767]
+              - generic [ref=e769]: hello@wiza.co
+              - img [ref=e770]
+            - list [ref=e773]:
+              - listitem [ref=e774]:
+                - link "Facebook" [ref=e775] [cursor=pointer]:
+                  - /url: https://linkedin.com/company/wizainc
+                  - img [ref=e777]
+              - listitem [ref=e780]
+              - listitem [ref=e781]:
+                - link "Facebook" [ref=e782] [cursor=pointer]:
+                  - /url: https://youtube.com/@wizacom
+                  - img [ref=e784]
+              - listitem [ref=e787]
+              - listitem [ref=e788]:
+                - link "Facebook" [ref=e789] [cursor=pointer]:
+                  - /url: https://www.instagram.com/wiza_co
+              - listitem [ref=e791]
+              - listitem [ref=e792]:
+                - link "Facebook" [ref=e793] [cursor=pointer]:
+                  - /url: https://twitter.com/wiza_co
+                  - img [ref=e795]
+          - generic [ref=e798]:
+            - generic [ref=e799]:
+              - heading "Solutions" [level=3] [ref=e800]
+              - list [ref=e801]:
+                - listitem [ref=e802]:
+                  - link "Wiza Prospect" [ref=e803] [cursor=pointer]:
+                    - /url: /
+                    - generic [ref=e804]: Wiza Prospect
+                - listitem [ref=e805]:
+                  - link "Wiza Monitor" [ref=e806] [cursor=pointer]:
+                    - /url: /monitor
+                    - generic [ref=e807]: Wiza Monitor
+                - listitem [ref=e808]:
+                  - link "Wiza Enterprise" [ref=e809] [cursor=pointer]:
+                    - /url: /enterprise
+                    - generic [ref=e810]: Wiza Enterprise
+                - listitem [ref=e811]:
+                  - link "AI Research" [ref=e812] [cursor=pointer]:
+                    - /url: /ai-research
+                    - generic [ref=e813]: AI Research
+                - listitem [ref=e814]:
+                  - link "API" [ref=e815] [cursor=pointer]:
+                    - /url: /wiza-api
+                    - generic [ref=e816]: API
+                - listitem [ref=e817]:
+                  - link "Integrations" [ref=e818] [cursor=pointer]:
+                    - /url: /integrations
+                    - generic [ref=e819]: Integrations
+                - listitem [ref=e820]:
+                  - link "Pricing" [ref=e821] [cursor=pointer]:
+                    - /url: /pricing
+                    - generic [ref=e822]: Pricing
+                - listitem [ref=e823]:
+                  - link "Get a demo" [ref=e824] [cursor=pointer]:
+                    - /url: /book-demo
+                    - generic [ref=e825]: Get a demo
+            - generic [ref=e826]:
+              - heading "Resources" [level=3] [ref=e827]
+              - list [ref=e828]:
+                - listitem [ref=e829]:
+                  - link "Customers" [ref=e830] [cursor=pointer]:
+                    - /url: /customers
+                    - generic [ref=e831]: Customers
+                - listitem [ref=e832]:
+                  - link "Blog" [ref=e833] [cursor=pointer]:
+                    - /url: /blog
+                    - generic [ref=e834]: Blog
+                - listitem [ref=e835]:
+                  - link "Knowledge base" [ref=e836] [cursor=pointer]:
+                    - /url: https://help.wiza.co/?_gl=1*ch529j*_gcl_au*ODc1OTk5NTAuMTc1MzI2MTU4My4yNjk1NzQ0LjE3NTQ1NzQxNzUuMTc1NDU3NDE3NA..
+                    - generic [ref=e837]: Knowledge base
+                - listitem [ref=e838]:
+                  - link "Support" [ref=e839] [cursor=pointer]:
+                    - /url: "#"
+                    - generic [ref=e840]: Support
+                - listitem [ref=e841]:
+                  - link "Trust center" [ref=e842] [cursor=pointer]:
+                    - /url: https://trust.wiza.co/
+                    - generic [ref=e843]: Trust center
+                - listitem [ref=e844]:
+                  - link "Status" [ref=e845] [cursor=pointer]:
+                    - /url: https://status.wiza.co/?_gl=1*1m2zu6q*_gcl_au*ODc1OTk5NTAuMTc1MzI2MTU4My4yNjk1NzQ0LjE3NTQ1NzQxNzUuMTc1NDU3NDE3NA..
+                    - generic [ref=e846]: Status
+                - listitem [ref=e847]:
+                  - link "Free email finder" [ref=e848] [cursor=pointer]:
+                    - /url: /find-email-free
+                    - generic [ref=e849]: Free email finder
+                - listitem [ref=e850]:
+                  - link "Free email verifier" [ref=e851] [cursor=pointer]:
+                    - /url: /verify-email-free
+                    - generic [ref=e852]: Free email verifier
+                - listitem [ref=e853]:
+                  - link "Company directory" [ref=e854] [cursor=pointer]:
+                    - /url: /directory
+                    - generic [ref=e855]: Company directory
+            - generic [ref=e856]:
+              - heading "Company" [level=3] [ref=e857]
+              - list [ref=e858]:
+                - listitem [ref=e859]:
+                  - link "Feature requests" [ref=e860] [cursor=pointer]:
+                    - /url: https://feedback.wiza.co/features?_gl=1*3jfdmk*_gcl_au*ODc1OTk5NTAuMTc1MzI2MTU4My4yNjk1NzQ0LjE3NTQ1NzQxNzUuMTc1NDU3NDE3NA..
+                    - generic [ref=e861]: Feature requests
+                - listitem [ref=e862]:
+                  - link "Changelog" [ref=e863] [cursor=pointer]:
+                    - /url: https://feedback.wiza.co/changelog?_gl=1*o1a891*_gcl_au*ODc1OTk5NTAuMTc1MzI2MTU4My45MzMxNDE5MDguMTc1NjMzOTE4Ni4xNzU2MzM5MTkw
+                    - generic [ref=e864]: Changelog
+                - listitem [ref=e865]:
+                  - link "Become an affiliate" [ref=e866] [cursor=pointer]:
+                    - /url: https://jocl0dyzf26.typeform.com/partners
+                    - generic [ref=e867]: Become an affiliate
+                - listitem [ref=e868]:
+                  - link "Terms of service" [ref=e869] [cursor=pointer]:
+                    - /url: /tos
+                    - generic [ref=e870]: Terms of service
+                - listitem [ref=e871]:
+                  - link "Privacy policy" [ref=e872] [cursor=pointer]:
+                    - /url: /privacy
+                    - generic [ref=e873]: Privacy policy
+                - listitem [ref=e874]:
+                  - link "Vulnerability disclosure" [ref=e875] [cursor=pointer]:
+                    - /url: /vdp
+                    - generic [ref=e876]: Vulnerability disclosure
+                - listitem [ref=e877]:
+                  - link "Opt out" [ref=e878] [cursor=pointer]:
+                    - /url: /optout-directory
+                    - generic [ref=e879]: Opt out
+                - listitem [ref=e880]:
+                  - link "Do not sell or share my personal information" [ref=e881] [cursor=pointer]:
+                    - /url: /optout-contact-info
+                    - generic [ref=e882]: Do not sell or share my personal information
+        - img [ref=e886]
+        - generic [ref=e892]: "Disclaimer: Wiza, Inc is not affiliated, associated, authorized, endorsed by, or in any way officially connected with Microsoft or LinkedIn, or any of their subsidiaries or affiliates. The name LinkedIn, as well as related names, marks, logos, emblems, and images are registered trademarks of their respective owners."
+  - iframe [ref=e893]:
+    
+  - button "Open Intercom Messenger" [ref=e894] [cursor=pointer]:
+    - img [ref=e896]
+    - generic:
+      - img

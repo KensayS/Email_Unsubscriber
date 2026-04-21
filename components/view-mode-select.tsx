@@ -17,7 +17,7 @@ interface Props {
 
 export function ViewModeSelect({ value, onChange, disabled }: Props) {
   return (
-    <div className="flex gap-1 rounded-full bg-[#f5f0ff] dark:bg-[#2d1b4e] p-1 border border-[rgba(38,17,74,0.12)] dark:border-[rgba(167,139,250,0.15)] transition-colors duration-300">
+    <div className="flex gap-1 rounded-full bg-[#f5f5f5] dark:bg-[#2d2d2d] p-1 border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.1)] transition-colors duration-300">
       {MODES.map((mode) => (
         <Button
           key={mode.value}
@@ -27,8 +27,8 @@ export function ViewModeSelect({ value, onChange, disabled }: Props) {
           disabled={disabled}
           className={`flex gap-1.5 h-8 px-3 rounded-full transition-all duration-200 ${
             value === mode.value
-              ? 'bg-[#26114a] text-white'
-              : 'text-[#9491a1] dark:text-[#b8a7d6] hover:text-[#26114a] dark:hover:text-[#c084fc]'
+              ? 'bg-[#1a1a1a] text-white dark:bg-[#d4d4d4] dark:text-[#0f0f0f]'
+              : 'text-[#737373] dark:text-[#a3a3a3] hover:text-[#1a1a1a] dark:hover:text-[#e5e5e5]'
           }`}
           title={mode.label}
         >

@@ -1,0 +1,56 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - heading "Inbox Zero, Finally." [level=1] [ref=e4]
+    - paragraph [ref=e5]: Sign in with Gmail, see every mailing list you're on, and unsubscribe in one click. No data stored. Ever.
+    - button "Sign in with Google" [ref=e6]:
+      - img
+      - text: Sign in with Google
+  - generic [ref=e7]:
+    - paragraph [ref=e8]: Here's what it looks like
+    - generic [ref=e9]:
+      - generic [ref=e15]: unsubscriber.app/dashboard
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - generic [ref=e18]: 6 months ▾
+          - generic [ref=e19]: Scan
+          - generic [ref=e20]: 270 emails found
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - generic [ref=e24]:
+              - generic [ref=e25]: Nike
+              - generic [ref=e26]: 87 emails
+            - paragraph [ref=e27]: news@nike.com
+            - paragraph [ref=e28]: Weekly athletic gear sales and new product launches.
+          - button "Unsubscribe"
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - generic [ref=e32]:
+              - generic [ref=e33]: Medium Daily Digest
+              - generic [ref=e34]: 64 emails
+            - paragraph [ref=e35]: noreply@medium.com
+            - paragraph [ref=e36]: Personalized daily article recommendations based on your reading history.
+          - button "Unsubscribe"
+        - generic [ref=e38]:
+          - generic [ref=e39]:
+            - generic [ref=e40]:
+              - generic [ref=e41]: GitHub
+              - generic [ref=e42]: 51 emails
+            - paragraph [ref=e43]: noreply@github.com
+            - paragraph [ref=e44]: Repository activity digests, security alerts, and team notifications.
+          - button "Unsubscribe"
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - generic [ref=e48]:
+              - generic [ref=e49]: Airbnb
+              - generic [ref=e50]: 38 emails
+            - paragraph [ref=e51]: no-reply@airbnb.com
+            - paragraph [ref=e52]: Travel deal recommendations and booking reminders.
+          - button "Unsubscribe"
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - generic [ref=e56]:
+              - generic [ref=e57]: Duolingo
+              - generic [ref=e58]: 30 emails
+            - paragraph [ref=e59]: hello@duolingo.com
+            - paragraph [ref=e60]: Daily streak reminders and language learning progress updates.
+          - button "Unsubscribe"

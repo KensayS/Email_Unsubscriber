@@ -1,0 +1,9 @@
+[     168ms] Unexpected token '}'
+[     443ms] [LOG] false @ https://wiza.co/pricing:1948
+[     443ms] [LOG] false @ https://wiza.co/pricing:1948
+[     444ms] [LOG] false @ https://wiza.co/pricing:1948
+[     445ms] [LOG] false @ https://wiza.co/pricing:1948
+[     445ms] [LOG] false @ https://wiza.co/pricing:1948
+[     446ms] [LOG] false @ https://wiza.co/pricing:1948
+[     692ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ https://www.clarity.ms/tag/wd4gfsgi2t:0
+[    1531ms] [ERROR] Connecting to 'wss://nexus-websocket-a.intercom.io/pubsub/5-Y8fWlwSTCoDPGImyiiFhAhPgbEAdfvyc2OeUp7zGqb8yoz_3Ct21uEbVTzRyMWFo6AlXW72p9wfcOsjcVZckPV4-pYBsoOSMNpTF?X-Nexus-New-Client=true&X-Nexus-Version=0.18.7&user_role=visitor' violates the following Content Security Policy directive: "default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked. @ https://js.intercomcdn.com/vendor-modern.80eace52.js:1
