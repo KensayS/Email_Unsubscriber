@@ -29,3 +29,12 @@ export type StreamEvent =
 export type Timeframe = 1 | 3
 
 export type ViewMode = 'grid' | 'list'
+
+export interface UnsubscribedRecord {
+  id: string
+  google_user_id: string
+  sender_email: string
+  sender_name: string
+  unsubscribed_at: string
+  created_at: string
+}
