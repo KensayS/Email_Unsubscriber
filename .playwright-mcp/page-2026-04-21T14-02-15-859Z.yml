@@ -1,0 +1,89 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]: ✉ Inbox Cleaner
+      - heading "Inbox Zero, Finally." [level=1] [ref=e5]:
+        - text: Inbox Zero,
+        - text: Finally.
+      - paragraph [ref=e6]: Sign in with Gmail, see every mailing list you're on, and unsubscribe in one click. No data stored. Ever.
+      - button "Sign in with Google" [ref=e8]:
+        - img
+        - text: Sign in with Google
+    - generic [ref=e9]:
+      - paragraph [ref=e10]: See what you'll build
+      - generic [ref=e12]:
+        - generic [ref=e18]: unsubscriber.app/dashboard
+        - generic [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]:
+              - generic [ref=e22]: 1 month ▾
+              - generic [ref=e23]: Scan
+            - generic [ref=e24]:
+              - generic [ref=e25]:
+                - generic [ref=e26]: ▦▦▦
+                - generic [ref=e27]: ☰
+              - button "⚠️" [ref=e28]
+          - generic [ref=e29]:
+            - paragraph [ref=e30]: Grid View
+            - generic [ref=e31]:
+              - generic [ref=e32]:
+                - generic [ref=e33]:
+                  - generic [ref=e34]:
+                    - heading "Nike" [level=3] [ref=e35]
+                    - paragraph [ref=e36]: news@nike.com
+                  - paragraph [ref=e37]: "\"Weekly athletic gear sales and new product launches.\""
+                  - generic [ref=e39]: "87"
+                - generic [ref=e40]:
+                  - button "Unsubscribe"
+              - generic [ref=e41]:
+                - generic [ref=e42]:
+                  - generic [ref=e43]:
+                    - heading "Medium Daily Digest" [level=3] [ref=e44]
+                    - paragraph [ref=e45]: noreply@medium.com
+                  - paragraph [ref=e46]: "\"Personalized daily article recommendations based on your reading history.\""
+                  - generic [ref=e48]: "64"
+                - generic [ref=e49]:
+                  - button "Unsubscribe"
+              - generic [ref=e50]:
+                - generic [ref=e51]:
+                  - generic [ref=e52]:
+                    - heading "GitHub" [level=3] [ref=e53]
+                    - paragraph [ref=e54]: noreply@github.com
+                  - paragraph [ref=e55]: "\"Repository activity digests, security alerts, and team notifications.\""
+                  - generic [ref=e57]: "51"
+                - generic [ref=e58]:
+                  - button "Unsubscribe"
+          - generic [ref=e59]:
+            - paragraph [ref=e60]: List View
+            - generic [ref=e62]:
+              - generic [ref=e63]:
+                - generic [ref=e64]: Name
+                - generic [ref=e65]: Email
+                - generic [ref=e66]: Count
+                - generic [ref=e67]: Action
+              - generic [ref=e68]:
+                - generic [ref=e69]:
+                  - generic [ref=e70]: Nike
+                  - button "See details" [ref=e71]
+                - generic [ref=e73]: news@nike.com
+                - generic [ref=e75]: "87"
+                - generic [ref=e76]:
+                  - button "Unsubscribe"
+              - generic [ref=e77]:
+                - generic [ref=e78]:
+                  - generic [ref=e79]: Medium Daily Digest
+                  - button "See details" [ref=e80]
+                - generic [ref=e82]: noreply@medium.com
+                - generic [ref=e84]: "64"
+                - generic [ref=e85]:
+                  - button "Unsubscribe"
+              - generic [ref=e86]:
+                - generic [ref=e87]:
+                  - generic [ref=e88]: GitHub
+                  - button "See details" [ref=e89]
+                - generic [ref=e91]: noreply@github.com
+                - generic [ref=e93]: "51"
+                - generic [ref=e94]:
+                  - button "Unsubscribe"
+  - button "Open Next.js Dev Tools" [ref=e100] [cursor=pointer]:
+    - img [ref=e101]

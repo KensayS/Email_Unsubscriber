@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { TimeframeSelect } from '@/components/timeframe-select'
@@ -20,6 +20,23 @@ export function DashboardClient() {
   const [done, setDone] = useState(false)
   const [error, setError] = useState<string>()
   const [warningsMinimized, setWarningsMinimized] = useState(false)
+  const [unsubscribedCount, setUnsubscribedCount] = useState(0)
+
+  const refreshUnsubscribedCount = useCallback(async () => {
+    try {
+      const response = await fetch('/api/unsubscribes')
+      if (response.ok) {
+        const records = await response.json()
+        setUnsubscribedCount(records.length)
+      }
+    } catch (err) {
+      console.error('Error fetching unsubscribed count:', err)
+    }
+  }, [])
+
+  useEffect(() => {
+    refreshUnsubscribedCount()
+  }, [])
 
   const handleScan = useCallback(async () => {
     setSenders([])
@@ -128,6 +145,7 @@ export function DashboardClient() {
               unsubscribedAt: new Date().toISOString(),
             }),
           })
+          refreshUnsubscribedCount()
         } catch (err) {
           console.error('[Dashboard] Error logging unsubscribe:', err)
         }
@@ -144,19 +162,22 @@ export function DashboardClient() {
     <div className="min-h-screen bg-background dark:bg-[#0f0f0f] transition-colors duration-300">
       {/* Scan Progress Bar */}
       {scanning && (
-        <div
-          className="h-1.5 bg-[#6b5b95] relative overflow-hidden shadow-lg"
-          style={{
-            animation: 'indeterminate-progress 2s ease-in-out infinite',
-          }}
-        >
-          <style>{`
-            @keyframes indeterminate-progress {
-              0% { transform: translateX(-100%); }
-              50% { transform: translateX(100%); }
-              100% { transform: translateX(100%); }
-            }
-          `}</style>
+        <div className="relative h-1 bg-[rgba(0,0,0,0.08)] dark:bg-[rgba(255,255,255,0.05)] overflow-hidden">
+          <div
+            className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-transparent via-[#6b5b95] to-transparent"
+            style={{
+              animation: 'smooth-progress 2.5s ease-in-out infinite',
+            }}
+          >
+            <style>{`
+              @keyframes smooth-progress {
+                0% { transform: translateX(-100%); }
+                50% { transform: translateX(400%); }
+                100% { transform: translateX(400%); }
+              }
+            `}</style>
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 dark:opacity-0 animate-pulse"></div>
         </div>
       )}
 
@@ -208,7 +229,7 @@ export function DashboardClient() {
                   : 'text-[#737373] dark:text-[#a3a3a3] hover:text-[#1a1a1a] dark:hover:text-[#e5e5e5]'
               }`}
             >
-              Unsubscribed
+              Unsubscribed ({unsubscribedCount})
             </button>
           </div>
         )}

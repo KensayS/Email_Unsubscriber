@@ -1,0 +1,21 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - heading "📧 Inbox Manager" [level=1] [ref=e5]
+        - generic [ref=e6]:
+          - combobox [disabled] [ref=e7]:
+            - generic: 1 month
+            - img [ref=e8]
+          - button "Scanning…" [disabled]
+        - button "Sign out" [ref=e13]
+    - main [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - strong [ref=e17]: "Note:"
+          - text: Unsubscription is permanent in your inbox. Scans are saved per session, but synced across browser tabs with your account.
+        - button "✕" [ref=e18]
+      - paragraph [ref=e34]: Scanning your inbox…
+  - button "Open Next.js Dev Tools" [ref=e26] [cursor=pointer]:
+    - img [ref=e27]
+  - alert [ref=e30]
