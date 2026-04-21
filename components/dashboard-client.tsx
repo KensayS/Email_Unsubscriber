@@ -19,7 +19,6 @@ export function DashboardClient() {
   const [senders, setSenders] = useState<SenderInfo[]>([])
   const [done, setDone] = useState(false)
   const [error, setError] = useState<string>()
-  const [warningsMinimized, setWarningsMinimized] = useState(false)
   const [unsubscribedCount, setUnsubscribedCount] = useState(0)
 
   const refreshUnsubscribedCount = useCallback(async () => {
@@ -193,15 +192,6 @@ export function DashboardClient() {
             </Button>
           </div>
           <div className="flex items-center gap-2">
-            {warningsMinimized && (
-              <button
-                onClick={() => setWarningsMinimized(false)}
-                className="text-xl hover:opacity-70 transition-opacity"
-                title="Show warnings"
-              >
-                ⚠️
-              </button>
-            )}
             {senders.length > 0 && activeTab === 'scan' && <ViewModeSelect value={viewMode} onChange={setViewMode} disabled={scanning} />}
             <Button variant="ghost" size="sm" onClick={() => signOut({ callbackUrl: '/' })}>
               Sign out
@@ -238,20 +228,6 @@ export function DashboardClient() {
 
       {/* Content */}
       <main className="w-full px-4 py-6 space-y-3 lg:px-8">
-        {!warningsMinimized && (
-          <div className="rounded-lg bg-[#f5f5f5] dark:bg-[#2d2d2d] border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.1)] p-3 text-sm text-[#1a1a1a] dark:text-[#e5e5e5] flex items-start gap-3">
-            <div className="flex-1">
-              <strong>Note:</strong> Unsubscription is permanent in your inbox. Scans are saved per session, but synced across browser tabs with your account.
-            </div>
-            <button
-              onClick={() => setWarningsMinimized(true)}
-              className="text-[#1a1a1a] dark:text-[#e5e5e5] hover:opacity-70 transition-opacity flex-shrink-0 text-lg"
-              title="Dismiss"
-            >
-              ✕
-            </button>
-          </div>
-        )}
 
         {/* Stats bar - shown after scan completes */}
         {done && senders.length > 0 && activeTab === 'scan' && (
