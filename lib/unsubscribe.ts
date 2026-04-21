@@ -8,6 +8,45 @@ type UnsubscribeAction =
   | { method: 'url'; url: string }
   | { method: 'not_found' }
 
+/**
+ * Log successful unsubscribe action to the database
+ * Errors are logged to console but not thrown (fire-and-forget)
+ */
+async function logUnsubscribeToDatabase(
+  senderEmail?: string,
+  senderName?: string
+): Promise<void> {
+  if (!senderEmail) {
+    console.log('[logUnsubscribeToDatabase] No sender email provided, skipping log')
+    return
+  }
+
+  try {
+    const response = await fetch('/api/unsubscribe/log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        senderEmail,
+        senderName: senderName || 'unknown',
+        unsubscribedAt: new Date().toISOString(),
+      }),
+    })
+
+    if (!response.ok) {
+      console.error(
+        '[logUnsubscribeToDatabase] Failed to log unsubscribe:',
+        response.status,
+        response.statusText
+      )
+      return
+    }
+
+    console.log('[logUnsubscribeToDatabase] Successfully logged unsubscribe for:', senderEmail)
+  } catch (error) {
+    console.error('[logUnsubscribeToDatabase] Error logging unsubscribe:', error)
+  }
+}
+
 export function buildUnsubscribeAction(
   listUnsubscribe: string | undefined,
   listUnsubscribePost: string | undefined
@@ -39,7 +78,9 @@ export function buildUnsubscribeAction(
 export async function performUnsubscribe(
   listUnsubscribe: string | undefined,
   listUnsubscribePost: string | undefined,
-  accessToken: string
+  accessToken: string,
+  senderEmail?: string,
+  senderName?: string
 ): Promise<UnsubscribeResult> {
   const action = buildUnsubscribeAction(listUnsubscribe, listUnsubscribePost)
   console.log('[performUnsubscribe] Action method:', action.method, action)
@@ -53,6 +94,8 @@ export async function performUnsubscribe(
       })
 
       if (response.status === 200 || response.status === 204) {
+        // Log the successful unsubscribe
+        await logUnsubscribeToDatabase(senderEmail, senderName)
         return { status: 'unsubscribed' }
       }
       if (response.status === 409 || response.status === 422) {
@@ -84,6 +127,8 @@ export async function performUnsubscribe(
       requestBody: { raw: encoded },
     })
 
+    // Log the successful unsubscribe
+    await logUnsubscribeToDatabase(senderEmail, senderName)
     return { status: 'unsubscribed' }
   }
 
