@@ -27,6 +27,7 @@ export function SenderListView({ senders, onUnsubscribe }: Props) {
   const [urls, setUrls] = useState<Record<string, string>>({})
   const [selectedSender, setSelectedSender] = useState<SenderInfo | null>(null)
   const [unsubscribedEmails, setUnsubscribedEmails] = useState<Set<string>>(new Set())
+  const [fadingOut, setFadingOut] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     async function fetchUnsubscribed() {
@@ -53,6 +54,12 @@ export function SenderListView({ senders, onUnsubscribe }: Props) {
       setStatuses((p) => ({ ...p, [sender.email]: result.status as UnsubscribeStatus }))
       if (result.url) {
         setUrls((p) => ({ ...p, [sender.email]: result.url! }))
+      }
+
+      if (result.status === 'unsubscribed') {
+        setTimeout(() => {
+          setFadingOut((p) => new Set([...p, sender.email]))
+        }, 400)
       }
     } catch (error) {
       console.error(`Failed to unsubscribe from ${sender.email}:`, error)
@@ -90,16 +97,19 @@ export function SenderListView({ senders, onUnsubscribe }: Props) {
           </div>
 
           {senders
-            .filter((s) => !unsubscribedEmails.has(s.email))
+            .filter((s) => !unsubscribedEmails.has(s.email) && !fadingOut.has(s.email))
             .map((sender) => {
             const status = statuses[sender.email] || 'idle'
             const isDisabled = status === 'loading' || status === 'unsubscribed' || status === 'not_found'
             const label = BUTTON_LABELS[status]
+            const isFading = fadingOut.has(sender.email)
 
             return (
               <div
                 key={sender.email}
-                className="group grid grid-cols-12 gap-2 px-4 py-3 hover:bg-[#f5f5f5] dark:hover:bg-[#2d2d2d] transition-colors items-center md:h-14"
+                className={`group grid grid-cols-12 gap-2 px-4 py-3 hover:bg-[#f5f5f5] dark:hover:bg-[#2d2d2d] transition-all items-center md:h-14 ${
+                  isFading ? 'opacity-0' : 'opacity-100'
+                }`}
               >
                 {/* Name - full width on mobile, 4 cols on desktop */}
                 <div className="col-span-12 md:col-span-4 min-w-0">
