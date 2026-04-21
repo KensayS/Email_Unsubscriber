@@ -191,6 +191,29 @@ export function DashboardClient() {
         />
       )}
 
+      {/* Right Sidebar Menu */}
+      <div
+        className={`fixed right-0 top-0 h-screen w-64 md:hidden bg-background dark:bg-card transition-transform duration-300 ease-out flex flex-col items-center justify-center gap-6 ${
+          mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+        style={{ zIndex: 40 }}
+      >
+        <div className="flex flex-col items-center gap-4 w-full px-6">
+          <div className="flex items-center gap-3 justify-between w-full">
+            <span className="text-sm font-medium text-foreground">Theme</span>
+            <ThemeToggle />
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => signOut({ callbackUrl: '/' })}
+            className="w-full border-2 border-destructive hover:bg-destructive/5 text-destructive font-medium"
+          >
+            Sign out
+          </Button>
+        </div>
+      </div>
+
       {/* Header */}
       <header className="border-b border-border dark:border-border bg-background dark:bg-card transition-colors duration-300 relative" style={{ zIndex: 40 }}>
         {/* Main Header Row */}
@@ -210,7 +233,7 @@ export function DashboardClient() {
           </div>
 
           {/* Mobile Controls - Always visible */}
-          <div className="flex md:hidden items-center gap-2 relative">
+          <div className="flex md:hidden items-center gap-2">
             <TimeframeSelect value={timeframe} onChange={setTimeframe} disabled={scanning} />
             <Button onClick={handleScan} disabled={scanning} size="sm">
               {scanning ? 'Scanning…' : 'Scan'}
@@ -226,26 +249,6 @@ export function DashboardClient() {
                 <Menu className="w-5 h-5 text-foreground" />
               )}
             </button>
-
-            {/* Mobile Menu Dropdown - Swoop overlay */}
-            <div
-              className={`absolute right-0 top-full mt-0 w-48 md:hidden transition-all duration-300 ease-out transform origin-top-right pointer-events-none ${
-                mobileMenuOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-              }`}
-              style={{ pointerEvents: mobileMenuOpen ? 'auto' : 'none' }}
-            >
-              <div className="mt-2 space-y-2 py-2">
-                <div className="px-4 flex items-center gap-2 justify-between">
-                  <span className="text-xs font-medium text-foreground">Theme</span>
-                  <ThemeToggle />
-                </div>
-                <div className="px-3">
-                  <Button variant="outline" size="sm" onClick={() => signOut({ callbackUrl: '/' })} className="w-full border-2 border-destructive hover:bg-destructive/5 text-destructive font-medium text-xs">
-                    Sign out
-                  </Button>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
