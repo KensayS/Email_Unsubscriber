@@ -67,6 +67,11 @@ export const authOptions: NextAuthOptions = {
       return session
     },
     async redirect({ url, baseUrl }) {
+      // url contains the callback URL passed to signOut/signIn
+      if (url.startsWith(baseUrl)) return url
+      // If relative path, use it directly
+      if (url.startsWith('/')) return baseUrl + url
+      // Default: redirect to dashboard for sign in
       return baseUrl + '/dashboard'
     },
   },
