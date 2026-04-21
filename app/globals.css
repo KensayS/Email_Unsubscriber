@@ -48,7 +48,7 @@
 }
 
 :root {
-  /* Minimalist gray palette with subtle purple accents */
+  /* Clean gray palette with bright blue accents (from design system) */
   --gray-900: #1a1a1a;
   --gray-800: #2d2d2d;
   --gray-700: #3f3f3f;
@@ -58,28 +58,28 @@
   --gray-300: #d4d4d4;
   --gray-200: #e5e5e5;
   --gray-100: #f5f5f5;
-  --purple-600: #6b5b95;
-  --purple-500: #8b7bb8;
+  --blue-600: #0066cc;
+  --blue-500: #0082f3;
 
   /* Semantic tokens */
   --background: #ffffff;
-  --foreground: #1a1a1a;
+  --foreground: #222222;
   --card: #ffffff;
-  --card-foreground: #1a1a1a;
+  --card-foreground: #222222;
   --popover: #ffffff;
-  --popover-foreground: #1a1a1a;
-  --primary: #1a1a1a;
+  --popover-foreground: #222222;
+  --primary: #222222;
   --primary-foreground: #ffffff;
-  --secondary: #f5f5f5;
-  --secondary-foreground: #1a1a1a;
-  --muted: #f5f5f5;
-  --muted-foreground: #737373;
-  --accent: #6b5b95;
+  --secondary: #f8fafb;
+  --secondary-foreground: #222222;
+  --muted: #f0f2f5;
+  --muted-foreground: #758696;
+  --accent: #0082f3;
   --accent-foreground: #ffffff;
   --destructive: #dc2626;
-  --border: rgba(0, 0, 0, 0.08);
-  --input: #f5f5f5;
-  --ring: rgba(107, 91, 149, 0.1);
+  --border: #e8ecf1;
+  --input: #f8fafb;
+  --ring: rgba(0, 130, 243, 0.1);
   --chart-1: #e5e5e5;
   --chart-2: #a3a3a3;
   --chart-3: #737373;
