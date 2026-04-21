@@ -30,9 +30,11 @@ export async function POST(request: Request) {
 
     const userId = session.user.id
 
-    console.log(
-      `[unsubscribe/log] Logging unsubscribe for ${userId} ${senderEmail}`
-    )
+    console.log(`[unsubscribe/log] Logging unsubscribe for user ${userId}`, {
+      senderEmail,
+      senderName,
+      unsubscribedAt,
+    })
 
     // Log the unsubscribe action
     const success = await logUnsubscribe(
@@ -43,11 +45,14 @@ export async function POST(request: Request) {
     )
 
     if (!success) {
+      console.error('[unsubscribe/log] logUnsubscribe returned false')
       return Response.json(
         { error: 'Failed to log unsubscribe' },
         { status: 500 }
       )
     }
+
+    console.log(`[unsubscribe/log] Successfully logged unsubscribe for ${senderEmail}`)
 
     return Response.json({ success: true })
   } catch (error) {

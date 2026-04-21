@@ -39,15 +39,15 @@ export function UnsubscribedView() {
   if (isLoading) {
     return (
       <div className="w-full flex items-center justify-center py-12">
-        <div className="text-sm text-muted-foreground">Loading unsubscribed senders...</div>
+        <div className="text-sm text-[#9491a1] dark:text-[#b8a7d6] animate-pulse">Loading unsubscribed senders…</div>
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="w-full rounded-lg border border-red-200 bg-red-50 p-4">
-        <div className="text-sm text-red-800">Error loading unsubscribes: {error}</div>
+      <div className="w-full rounded-lg border border-[rgba(38,17,74,0.12)] dark:border-[rgba(167,139,250,0.15)] bg-[#f5f0ff] dark:bg-[#2d1b4e] p-4">
+        <div className="text-sm text-[#26114a] dark:text-[#c084fc]">Error loading unsubscribes: {error}</div>
       </div>
     )
   }
@@ -55,16 +55,16 @@ export function UnsubscribedView() {
   if (records.length === 0) {
     return (
       <div className="w-full flex items-center justify-center py-12">
-        <div className="text-sm text-muted-foreground">No unsubscribes yet</div>
+        <div className="text-sm text-[#9491a1] dark:text-[#b8a7d6]">✓ All clean! No unsubscribes yet</div>
       </div>
     )
   }
 
   return (
-    <div className="w-full rounded-lg border bg-card overflow-hidden">
-      <div className="divide-y">
+    <div className="w-full rounded-lg border border-[rgba(38,17,74,0.08)] dark:border-[rgba(167,139,250,0.15)] bg-white dark:bg-[#1a1428] overflow-hidden shadow-sm dark:shadow-lg dark:shadow-[#7e43ff]/10 transition-all duration-300">
+      <div className="divide-y divide-[rgba(38,17,74,0.08)] dark:divide-[rgba(167,139,250,0.15)]">
         {/* Header - hidden on mobile */}
-        <div className="hidden md:grid grid-cols-12 gap-2 bg-muted/40 px-4 py-3 font-semibold text-sm h-12 items-center">
+        <div className="hidden md:grid grid-cols-12 gap-2 bg-[#f5f0ff] dark:bg-[#2d1b4e] px-4 py-3 font-semibold text-xs uppercase tracking-wide text-[#26114a] dark:text-[#c084fc] h-12 items-center transition-colors duration-300">
           <div className="col-span-4">Name</div>
           <div className="col-span-4">Email</div>
           <div className="col-span-4 text-right">Unsubscribed</div>
@@ -74,24 +74,24 @@ export function UnsubscribedView() {
         {records.map((record) => (
           <div
             key={record.id}
-            className="grid grid-cols-12 gap-2 px-4 py-3 hover:bg-muted/40 transition-colors items-center md:h-14"
+            className="group grid grid-cols-12 gap-2 px-4 py-3 hover:bg-[#f5f0ff] dark:hover:bg-[#2d1b4e] transition-colors items-center md:h-14"
           >
             {/* Name - full width on mobile, 4 cols on desktop */}
             <div className="col-span-12 md:col-span-4 min-w-0">
-              <div className="font-medium text-sm truncate">{record.sender_name}</div>
-              <div className="text-xs text-muted-foreground truncate md:hidden">
+              <div className="font-semibold text-sm text-[#26114a] dark:text-[#f5f3ff] truncate group-hover:text-[#7e43ff] dark:group-hover:text-[#c084fc] transition-colors">{record.sender_name}</div>
+              <div className="text-xs text-[#9491a1] dark:text-[#b8a7d6] truncate md:hidden">
                 {record.sender_email}
               </div>
             </div>
 
             {/* Email - hidden on mobile */}
             <div className="hidden md:block md:col-span-4 min-w-0">
-              <div className="text-sm text-muted-foreground truncate">{record.sender_email}</div>
+              <div className="text-sm text-[#9491a1] dark:text-[#b8a7d6] truncate">{record.sender_email}</div>
             </div>
 
             {/* Unsubscribed Date */}
             <div className="col-span-12 md:col-span-4 text-right">
-              <Badge variant="secondary" className="text-xs">
+              <Badge className="text-xs bg-[#e4d8fd] dark:bg-[#7e43ff]/30 text-[#26114a] dark:text-[#c084fc] font-medium">
                 {new Date(record.unsubscribed_at).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'short',

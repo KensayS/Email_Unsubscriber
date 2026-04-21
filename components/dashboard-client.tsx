@@ -141,11 +141,29 @@ export function DashboardClient() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background dark:bg-[#0f0a1a] transition-colors duration-300">
+      {/* Scan Progress Bar */}
+      {scanning && (
+        <div
+          className="h-1.5 bg-gradient-to-r from-[#7e43ff] via-[#c084fc] to-[#7e43ff] relative overflow-hidden shadow-lg shadow-[#7e43ff]/50"
+          style={{
+            animation: 'indeterminate-progress 2s ease-in-out infinite',
+          }}
+        >
+          <style>{`
+            @keyframes indeterminate-progress {
+              0% { transform: translateX(-100%); }
+              50% { transform: translateX(100%); }
+              100% { transform: translateX(100%); }
+            }
+          `}</style>
+        </div>
+      )}
+
       {/* Header */}
-      <header className="border-b px-4 py-4 lg:px-8">
+      <header className="border-b border-[rgba(38,17,74,0.08)] dark:border-[rgba(167,139,250,0.15)] px-4 py-4 lg:px-8 bg-white dark:bg-[#1a1428] transition-colors duration-300">
         <div className="flex items-center gap-3 justify-between flex-wrap mb-3">
-          <h1 className="font-bold text-lg">Email Unsubscriber</h1>
+          <h1 className="font-bold text-xl text-[#26114a] dark:text-[#f5f3ff] tracking-tight">📧 Inbox Manager</h1>
           <div className="flex items-center gap-2 flex-wrap">
             <TimeframeSelect value={timeframe} onChange={setTimeframe} disabled={scanning} />
             <Button onClick={handleScan} disabled={scanning} size="sm">
@@ -171,23 +189,23 @@ export function DashboardClient() {
 
         {/* Tab Switcher - only show when senders exist */}
         {senders.length > 0 && (
-          <div className="flex items-center gap-4 border-t pt-3 -mx-4 -mb-4 px-4">
+          <div className="flex items-center gap-2 pt-3 -mx-4 -mb-4 px-4">
             <button
               onClick={() => setActiveTab('scan')}
-              className={`pb-3 font-medium text-sm transition-colors ${
+              className={`px-4 py-2 rounded-full font-medium text-sm transition-colors ${
                 activeTab === 'scan'
-                  ? 'text-foreground border-b-2 border-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'bg-[#26114a] text-white'
+                  : 'text-[#9491a1] hover:text-[#26114a]'
               }`}
             >
               Scan Results ({senders.length})
             </button>
             <button
               onClick={() => setActiveTab('unsubscribed')}
-              className={`pb-3 font-medium text-sm transition-colors ${
+              className={`px-4 py-2 rounded-full font-medium text-sm transition-colors ${
                 activeTab === 'unsubscribed'
-                  ? 'text-foreground border-b-2 border-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'bg-[#26114a] text-white'
+                  : 'text-[#9491a1] hover:text-[#26114a]'
               }`}
             >
               Unsubscribed
@@ -199,37 +217,25 @@ export function DashboardClient() {
       {/* Content */}
       <main className="w-full px-4 py-6 space-y-3 lg:px-8">
         {!warningsMinimized && (
-          <div className="space-y-3">
-            {/* Session persistence warning */}
-            <div className="rounded-lg bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 p-3 text-sm text-amber-900 dark:text-amber-100 flex items-start gap-3">
-              <div className="flex-1">
-                <strong>Note:</strong> This app uses no database. If you unsubscribe, the list will still appear across sessions. Unsubscription is permanent in your inbox, but the scan results are not stored.
-              </div>
-              <button
-                onClick={() => setWarningsMinimized(true)}
-                className="text-amber-900 dark:text-amber-100 hover:opacity-70 transition-opacity flex-shrink-0 text-lg"
-                title="Minimize warnings"
-              >
-                ✕
-              </button>
+          <div className="rounded-lg bg-[#f5f0ff] border border-[rgba(38,17,74,0.12)] p-3 text-sm text-[#26114a] flex items-start gap-3">
+            <div className="flex-1">
+              <strong>Note:</strong> Unsubscription is permanent in your inbox. Scans are saved per session, but synced across browser tabs with your account.
             </div>
-
-            {/* 3 months warning */}
-            {timeframe >= 3 && (
-              <div className="rounded-lg bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 p-3 text-sm text-blue-900 dark:text-blue-100 flex items-start gap-3">
-                <div className="flex-1">
-                  <strong>Heads up:</strong> Scanning {timeframe} months takes significantly longer. Start with 1 month for faster results.
-                </div>
-                <button
-                  onClick={() => setWarningsMinimized(true)}
-                  className="text-blue-900 dark:text-blue-100 hover:opacity-70 transition-opacity flex-shrink-0 text-lg"
-                  title="Minimize warnings"
-                >
-                  ✕
-                </button>
-              </div>
-            )}
+            <button
+              onClick={() => setWarningsMinimized(true)}
+              className="text-[#26114a] hover:opacity-70 transition-opacity flex-shrink-0 text-lg"
+              title="Dismiss"
+            >
+              ✕
+            </button>
           </div>
+        )}
+
+        {/* Stats bar - shown after scan completes */}
+        {done && senders.length > 0 && activeTab === 'scan' && (
+          <p className="text-sm text-[#9491a1] text-center py-2">
+            Found <strong className="text-[#26114a]">{senders.length}</strong> mailing lists
+          </p>
         )}
 
         {error && (

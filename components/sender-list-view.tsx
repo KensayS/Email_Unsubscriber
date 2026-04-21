@@ -6,6 +6,20 @@ import { Badge } from '@/components/ui/badge'
 import { SenderInfo, UnsubscribeResult, UnsubscribeStatus } from '@/types'
 import { SenderDetailsModal } from '@/components/sender-details-modal'
 
+const AVATAR_COLORS = [
+  '#e4d8fd', // lavender
+  '#d4e8f7', // sky
+  '#fce4ec', // rose
+  '#f3e5f5', // light purple
+  '#e0f2f1', // teal
+  '#fff3e0', // amber
+]
+
+function getAvatarColor(name: string): string {
+  const code = name.charCodeAt(0)
+  return AVATAR_COLORS[code % AVATAR_COLORS.length]
+}
+
 interface Props {
   senders: SenderInfo[]
   onUnsubscribe?: (sender: SenderInfo) => Promise<UnsubscribeResult>
@@ -63,9 +77,9 @@ export function SenderListView({ senders, onUnsubscribe }: Props) {
 
   return (
     <>
-      <div className="w-full rounded-lg border bg-card overflow-hidden">
-        <div className="divide-y">
-          <div className="hidden md:grid grid-cols-12 gap-2 bg-muted/40 px-4 py-3 font-semibold text-sm h-12 items-center">
+      <div className="w-full rounded-lg border border-[rgba(38,17,74,0.08)] dark:border-[rgba(167,139,250,0.15)] bg-white dark:bg-[#1a1428] overflow-hidden shadow-sm dark:shadow-lg dark:shadow-[#7e43ff]/10 transition-all duration-300">
+        <div className="divide-y divide-[rgba(38,17,74,0.08)] dark:divide-[rgba(167,139,250,0.15)]">
+          <div className="hidden md:grid grid-cols-12 gap-2 bg-[#f5f0ff] dark:bg-[#2d1b4e] px-4 py-3 font-semibold text-xs uppercase tracking-wide text-[#26114a] dark:text-[#c084fc] h-12 items-center transition-colors duration-300">
             <div className="col-span-4">Name</div>
             <div className="col-span-4">Email</div>
             <div className="col-span-2 text-right">Count</div>
@@ -76,31 +90,41 @@ export function SenderListView({ senders, onUnsubscribe }: Props) {
             const status = statuses[sender.email] || 'idle'
             const isDisabled = status === 'loading' || status === 'unsubscribed' || status === 'not_found'
             const label = BUTTON_LABELS[status]
+            const initial = sender.name[0]?.toUpperCase() || 'U'
+            const avatarColor = getAvatarColor(sender.name)
 
             return (
               <div
                 key={sender.email}
-                className="grid grid-cols-12 gap-2 px-4 py-3 hover:bg-muted/40 transition-colors items-center md:h-14"
+                className="group grid grid-cols-12 gap-2 px-4 py-3 hover:bg-[#f5f0ff] dark:hover:bg-[#2d1b4e] transition-colors items-center md:h-14"
               >
-                {/* Name - full width on mobile, 4 cols on desktop */}
-                <div className="col-span-12 md:col-span-4 min-w-0">
-                  <div className="font-medium text-sm truncate">{sender.name}</div>
-                  <button
-                    onClick={() => setSelectedSender(sender)}
-                    className="text-xs text-blue-600 hover:underline truncate text-left"
+                {/* Avatar + Name - full width on mobile, 4 cols on desktop */}
+                <div className="col-span-12 md:col-span-4 min-w-0 flex items-center gap-3">
+                  <div
+                    className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold text-white shadow-sm"
+                    style={{ backgroundColor: avatarColor }}
                   >
-                    See details
-                  </button>
+                    {initial}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="font-semibold text-sm text-[#26114a] dark:text-[#f5f3ff] truncate group-hover:text-[#7e43ff] dark:group-hover:text-[#c084fc] transition-colors">{sender.name}</div>
+                    <button
+                      onClick={() => setSelectedSender(sender)}
+                      className="text-xs text-[#7e43ff] dark:text-[#c084fc] hover:underline truncate text-left opacity-80 hover:opacity-100 transition-opacity"
+                    >
+                      See details
+                    </button>
+                  </div>
                 </div>
 
                 {/* Email - hidden on mobile */}
                 <div className="hidden md:block md:col-span-4 min-w-0">
-                  <div className="text-sm text-muted-foreground truncate">{sender.email}</div>
+                  <div className="text-sm text-[#9491a1] dark:text-[#b8a7d6] truncate">{sender.email}</div>
                 </div>
 
                 {/* Count */}
                 <div className="col-span-3 md:col-span-2 text-right">
-                  <Badge variant="secondary" className="text-xs">
+                  <Badge className="text-xs bg-[#e4d8fd] dark:bg-[#7e43ff]/30 text-[#26114a] dark:text-[#c084fc] font-medium">
                     {sender.count}
                   </Badge>
                 </div>

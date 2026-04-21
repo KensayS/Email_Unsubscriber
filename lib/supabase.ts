@@ -10,9 +10,10 @@ export interface UnsubscribedRecord {
   created_at: string
 }
 
-// Initialize Supabase client
+// Initialize Supabase clients
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+const supabaseSecretKey = process.env.SUPABASE_SECRET_KEY
 
 if (!supabaseUrl || !supabasePublishableKey) {
   throw new Error(
@@ -20,7 +21,16 @@ if (!supabaseUrl || !supabasePublishableKey) {
   )
 }
 
+// Client-side Supabase client (uses publishable key, respects RLS)
 export const supabase = createClient(supabaseUrl, supabasePublishableKey)
+
+// Server-side admin client (uses secret key, bypasses RLS for admin operations)
+let supabaseAdmin: ReturnType<typeof createClient> | null = null
+if (supabaseSecretKey) {
+  supabaseAdmin = createClient(supabaseUrl, supabaseSecretKey)
+} else {
+  console.warn('[supabase] SUPABASE_SECRET_KEY not found - admin operations will not work')
+}
 
 /**
  * Key Usage Documentation:
@@ -75,6 +85,7 @@ export async function fetchUserUnsubscribes(
 /**
  * Fetch all unsubscribed records for a user, ordered by most recent
  * Used to populate the Unsubscribed tab with full details
+ * Uses admin client (server-side) to bypass RLS
  *
  * @param googleUserId - The user's Google ID from their session
  * @returns UnsubscribedRecord[] ordered by unsubscribed_at DESC, empty array on error
@@ -83,20 +94,30 @@ export async function fetchUserUnsubscribesList(
   googleUserId: string
 ): Promise<UnsubscribedRecord[]> {
   try {
-    const { data, error } = await supabase
+    if (!supabaseAdmin) {
+      console.error('[supabase.fetchUserUnsubscribesList] Admin client not initialized')
+      return []
+    }
+
+    const { data, error } = await supabaseAdmin
       .from('user_unsubscribes')
       .select('*')
       .eq('google_user_id', googleUserId)
       .order('unsubscribed_at', { ascending: false })
 
     if (error) {
-      console.error('Error fetching user unsubscribes list:', error)
+      console.error('[supabase.fetchUserUnsubscribesList] Error:', {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+      })
       return []
     }
 
+    console.log(`[supabase.fetchUserUnsubscribesList] Fetched ${(data || []).length} records`)
     return (data as UnsubscribedRecord[]) || []
   } catch (err) {
-    console.error('Unexpected error in fetchUserUnsubscribesList:', err)
+    console.error('[supabase.fetchUserUnsubscribesList] Unexpected error:', err)
     return []
   }
 }
@@ -118,19 +139,32 @@ export async function logUnsubscribe(
   unsubscribedAt: string
 ): Promise<boolean> {
   try {
-    const { error } = await supabase.from('user_unsubscribes').insert([
+    if (!supabaseAdmin) {
+      console.error('[supabase.logUnsubscribe] Admin client not initialized - SUPABASE_SECRET_KEY missing')
+      return false
+    }
+
+    const { error } = await supabaseAdmin!.from('user_unsubscribes').insert(
       {
         google_user_id: googleUserId,
         sender_email: senderEmail,
         sender_name: senderName,
         unsubscribed_at: unsubscribedAt,
-      },
-    ])
+      } as any
+    )
 
     if (error) {
-      console.error('Error logging unsubscribe:', error)
+      console.error('[supabase.logUnsubscribe] Error:', {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+        fullError: error,
+      })
       return false
     }
+
+    console.log(`[supabase.logUnsubscribe] Successfully logged unsubscribe for ${senderEmail}`)
 
     return true
   } catch (err) {

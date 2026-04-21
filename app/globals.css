@@ -48,38 +48,45 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Brand colors - Wiza-inspired palette */
+  --brand-900: #26114a;
+  --brand-500: #7e43ff;
+  --brand-100: #f5f0ff;
+  --brand-50: #e4d8fd;
+
+  /* Semantic tokens */
+  --background: #ffffff;
+  --foreground: #26114a;
+  --card: #ffffff;
+  --card-foreground: #26114a;
+  --popover: #ffffff;
+  --popover-foreground: #26114a;
+  --primary: #26114a;
+  --primary-foreground: #ffffff;
+  --secondary: #f5f0ff;
+  --secondary-foreground: #26114a;
+  --muted: #f6f8fa;
+  --muted-foreground: #9491a1;
+  --accent: #7e43ff;
+  --accent-foreground: #ffffff;
+  --destructive: #dc2626;
+  --border: rgba(38, 17, 74, 0.12);
+  --input: #f6f8fa;
+  --ring: rgba(38, 17, 74, 0.16);
+  --chart-1: #e4d8fd;
+  --chart-2: #b8a6f5;
+  --chart-3: #7e43ff;
+  --chart-4: #5e2fd4;
+  --chart-5: #26114a;
+  --radius: 0.75rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #26114a;
+  --sidebar-primary: #26114a;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #7e43ff;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(38, 17, 74, 0.12);
+  --sidebar-ring: rgba(38, 17, 74, 0.16);
 }
 
 .dark {
@@ -126,4 +133,112 @@
   html {
     @apply font-sans;
   }
+}
+
+/* Dark mode support */
+.dark {
+  --background: #0f0a1a;
+  --foreground: #f5f3ff;
+  --card: #1a1428;
+  --card-foreground: #f5f3ff;
+  --popover: #1a1428;
+  --popover-foreground: #f5f3ff;
+  --primary: #a78bfa;
+  --primary-foreground: #0f0a1a;
+  --secondary: #2d1b4e;
+  --secondary-foreground: #e9d5ff;
+  --muted: #2d1b4e;
+  --muted-foreground: #b8a7d6;
+  --accent: #c084fc;
+  --accent-foreground: #0f0a1a;
+  --destructive: #f87171;
+  --border: rgba(167, 139, 250, 0.2);
+  --input: #2d1b4e;
+  --ring: rgba(167, 139, 250, 0.3);
+}
+
+/* Smooth transitions */
+* {
+  @apply transition-colors duration-200;
+}
+
+/* Focus state for accessibility */
+:focus-visible {
+  @apply outline-none ring-2 ring-[var(--primary)] ring-offset-2;
+}
+
+.dark :focus-visible {
+  @apply ring-offset-[#0f0a1a];
+}
+
+/* Smooth color scheme preference */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+/* Delightful animations */
+@keyframes slide-in-from-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-gentle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes bounce-gentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+.slide-in-from-bottom-4 {
+  animation: slide-in-from-bottom 0.6s ease-out;
+}
+
+.slide-in-from-bottom-8 {
+  animation: slide-in-from-bottom 0.8s ease-out;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+  opacity: 0;
+  animation-fill-mode: both;
+}
+
+.duration-700 {
+  animation-duration: 0.7s;
+}
+
+.duration-1000 {
+  animation-duration: 1s;
 }
