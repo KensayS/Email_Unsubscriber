@@ -79,7 +79,7 @@ export function UnsubscribedView() {
           >
             {/* Name - full width on mobile, 4 cols on desktop */}
             <div className="col-span-12 md:col-span-4 min-w-0">
-              <div className="font-semibold text-sm text-[#1a1a1a] dark:text-[#e5e5e5] truncate group-hover:text-[#6b5b95] dark:group-hover:text-[#8b7bb8] transition-colors">{record.sender_name}</div>
+              <div className="font-semibold text-sm text-[#1a1a1a] dark:text-[#e5e5e5] truncate group-hover:text-[#7bb3f5] dark:group-hover:text-[#0066cc] transition-colors">{record.sender_name}</div>
               <div className="text-xs text-[#737373] dark:text-[#a3a3a3] truncate md:hidden">
                 {record.sender_email}
               </div>

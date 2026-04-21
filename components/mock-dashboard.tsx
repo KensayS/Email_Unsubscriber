@@ -102,8 +102,8 @@ export function MockDashboard() {
                   className="group grid grid-cols-12 gap-2 px-4 py-3 hover:bg-[#f5f5f5] dark:hover:bg-[#2d2d2d] transition-colors items-center md:h-14"
                 >
                   <div className="col-span-12 md:col-span-4 min-w-0">
-                    <div className="font-semibold text-sm text-[#1a1a1a] dark:text-[#e5e5e5] truncate group-hover:text-[#6b5b95] dark:group-hover:text-[#8b7bb8] transition-colors">{sender.name}</div>
-                    <button className="text-xs text-[#6b5b95] dark:text-[#8b7bb8] hover:underline truncate text-left opacity-80 hover:opacity-100 transition-opacity">
+                    <div className="font-semibold text-sm text-[#1a1a1a] dark:text-[#e5e5e5] truncate group-hover:text-[#7bb3f5] dark:group-hover:text-[#0066cc] transition-colors">{sender.name}</div>
+                    <button className="text-xs text-[#7bb3f5] dark:text-[#0066cc] hover:underline truncate text-left opacity-80 hover:opacity-100 transition-opacity">
                       See details
                     </button>
                   </div>

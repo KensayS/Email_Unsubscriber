@@ -120,7 +120,7 @@ export function SenderGrid({ senders, onUnsubscribe }: Props) {
               {/* Content */}
               <div className="p-5 flex-1 flex flex-col gap-3">
                 <div>
-                  <h3 className="font-semibold text-sm text-[#1a1a1a] dark:text-[#e5e5e5] line-clamp-1 break-words group-hover:text-[#6b5b95] dark:group-hover:text-[#8b7bb8] transition-colors">{sender.name}</h3>
+                  <h3 className="font-semibold text-sm text-[#1a1a1a] dark:text-[#e5e5e5] line-clamp-1 break-words group-hover:text-[#7bb3f5] dark:group-hover:text-[#0066cc] transition-colors">{sender.name}</h3>
                   <p className="text-xs text-[#737373] dark:text-[#a3a3a3] mt-1.5 line-clamp-1">{sender.email}</p>
                 </div>
 

@@ -113,10 +113,10 @@ export function SenderListView({ senders, onUnsubscribe }: Props) {
               >
                 {/* Name - full width on mobile, 4 cols on desktop */}
                 <div className="col-span-12 md:col-span-4 min-w-0">
-                  <div className="font-semibold text-sm text-[#1a1a1a] dark:text-[#e5e5e5] truncate group-hover:text-[#6b5b95] dark:group-hover:text-[#8b7bb8] transition-colors">{sender.name}</div>
+                  <div className="font-semibold text-sm text-[#1a1a1a] dark:text-[#e5e5e5] truncate group-hover:text-[#7bb3f5] dark:group-hover:text-[#0066cc] transition-colors">{sender.name}</div>
                   <button
                     onClick={() => setSelectedSender(sender)}
-                    className="text-xs text-[#6b5b95] dark:text-[#8b7bb8] hover:underline truncate text-left opacity-80 hover:opacity-100 transition-opacity"
+                    className="text-xs text-[#7bb3f5] dark:text-[#0066cc] hover:underline truncate text-left opacity-80 hover:opacity-100 transition-opacity"
                   >
                     See details
                   </button>

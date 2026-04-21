@@ -195,7 +195,7 @@ export function DashboardClient() {
           <div className="flex items-center gap-2">
             {senders.length > 0 && activeTab === 'scan' && <ViewModeSelect value={viewMode} onChange={setViewMode} disabled={scanning} />}
             <ThemeToggle />
-            <Button variant="ghost" size="sm" onClick={() => signOut({ callbackUrl: '/' })}>
+            <Button variant="outline" size="sm" onClick={() => signOut({ callbackUrl: '/' })} className="border-2 border-destructive hover:bg-destructive/5 text-destructive font-medium">
               Sign out
             </Button>
           </div>

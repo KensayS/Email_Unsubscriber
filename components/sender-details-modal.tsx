@@ -77,7 +77,7 @@ export function SenderDetailsModal({ sender, onClose, onUnsubscribe, status, isD
               <ul className="space-y-2 max-h-48 overflow-y-auto rounded-lg bg-[#f5f5f5] dark:bg-[#2d2d2d] p-4 border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.1)]">
                 {sender.subjects.map((subject, idx) => (
                   <li key={idx} className="text-sm text-[#737373] dark:text-[#a3a3a3] leading-relaxed">
-                    <span className="text-[#6b5b95] dark:text-[#8b7bb8] font-bold mr-2">•</span>{subject}
+                    <span className="text-[#7bb3f5] dark:text-[#0066cc] font-bold mr-2">•</span>{subject}
                   </li>
                 ))}
               </ul>
