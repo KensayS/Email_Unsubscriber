@@ -191,27 +191,76 @@ export function DashboardClient() {
         />
       )}
 
-      {/* Right Sidebar Menu */}
+      {/* Right Sidebar Menu - Glassmorphism */}
       <div
-        className={`fixed right-0 top-0 h-screen w-64 md:hidden bg-background dark:bg-card transition-transform duration-300 ease-out flex flex-col items-center justify-center gap-6 ${
-          mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed right-0 top-0 h-screen w-64 md:hidden backdrop-blur-xl transition-transform duration-500 ease-out flex flex-col items-center justify-center gap-8 border-l border-white/10 ${
+          mobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
         }`}
-        style={{ zIndex: 40 }}
+        style={{
+          zIndex: 40,
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(20px)',
+        }}
       >
-        <div className="flex flex-col items-center gap-4 w-full px-6">
-          <div className="flex items-center gap-3 justify-between w-full">
-            <span className="text-sm font-medium text-foreground">Theme</span>
-            <ThemeToggle />
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => signOut({ callbackUrl: '/' })}
-            className="w-full border-2 border-destructive hover:bg-destructive/5 text-destructive font-medium"
+        <style>{`
+          @keyframes slideInGlass {
+            from {
+              transform: translateX(100%);
+              opacity: 0;
+            }
+            to {
+              transform: translateX(0);
+              opacity: 1;
+            }
+          }
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateY(10px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          .sidebar-content {
+            animation: fadeInUp 0.5s ease-out 0.2s both;
+          }
+          .sidebar-content:nth-child(2) {
+            animation-delay: 0.3s;
+          }
+        `}</style>
+
+        <div className="flex flex-col items-center gap-6 w-full px-8">
+          {/* Theme Section */}
+          <div className="sidebar-content flex items-center gap-3 justify-between w-full p-4 rounded-xl backdrop-blur-sm transition-all hover:bg-white/5"
+            style={{ background: 'rgba(255, 255, 255, 0.03)' }}
           >
-            Sign out
-          </Button>
+            <span className="text-sm font-semibold text-foreground/80">Theme</span>
+            <div className="transform transition-transform hover:scale-110 duration-300">
+              <ThemeToggle />
+            </div>
+          </div>
+
+          {/* Sign Out Button */}
+          <div className="sidebar-content w-full">
+            <Button
+              variant="outline"
+              onClick={() => signOut({ callbackUrl: '/' })}
+              className="w-full border-2 border-destructive/50 hover:border-destructive hover:bg-destructive/10 text-destructive font-semibold py-3 rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95"
+            >
+              Sign out
+            </Button>
+          </div>
         </div>
+
+        {/* Decorative glow element */}
+        <div
+          className="absolute bottom-0 right-0 w-96 h-96 rounded-full opacity-20 blur-3xl pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle, rgb(56, 116, 255), transparent)',
+          }}
+        />
       </div>
 
       {/* Header */}
