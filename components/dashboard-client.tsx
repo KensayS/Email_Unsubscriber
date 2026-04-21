@@ -191,9 +191,9 @@ export function DashboardClient() {
         />
       )}
 
-      {/* Right Sidebar Menu - Glassmorphism */}
+      {/* Right Sidebar Menu - Glassmorphism with Rows Layout */}
       <div
-        className={`fixed right-0 top-0 h-screen w-64 md:hidden backdrop-blur-xl transition-transform duration-500 ease-out flex flex-col items-center justify-center gap-8 border-l border-white/10 ${
+        className={`fixed right-0 top-0 h-screen w-64 md:hidden backdrop-blur-xl transition-transform duration-500 ease-out flex flex-col items-start justify-start pt-6 border-l border-white/10 overflow-y-auto ${
           mobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
         }`}
         style={{
@@ -213,45 +213,46 @@ export function DashboardClient() {
               opacity: 1;
             }
           }
-          @keyframes fadeInUp {
+          @keyframes slideInRow {
             from {
               opacity: 0;
-              transform: translateY(10px);
+              transform: translateX(20px);
             }
             to {
               opacity: 1;
-              transform: translateY(0);
+              transform: translateX(0);
             }
           }
-          .sidebar-content {
-            animation: fadeInUp 0.5s ease-out 0.2s both;
+          .sidebar-row {
+            animation: slideInRow 0.4s ease-out forwards;
           }
-          .sidebar-content:nth-child(2) {
-            animation-delay: 0.3s;
+          .sidebar-row:nth-child(1) {
+            animation-delay: 0.1s;
+          }
+          .sidebar-row:nth-child(2) {
+            animation-delay: 0.2s;
           }
         `}</style>
 
-        <div className="flex flex-col items-center gap-6 w-full px-8">
-          {/* Theme Section */}
-          <div className="sidebar-content flex items-center gap-3 justify-between w-full p-4 rounded-xl backdrop-blur-sm transition-all hover:bg-white/5"
-            style={{ background: 'rgba(255, 255, 255, 0.03)' }}
-          >
+        {/* Theme Row */}
+        <div className="sidebar-row w-full px-4 py-3 border-b border-white/10 hover:bg-white/5 transition-colors">
+          <div className="flex items-center gap-3 justify-between">
             <span className="text-sm font-semibold text-foreground/80">Theme</span>
             <div className="transform transition-transform hover:scale-110 duration-300">
               <ThemeToggle />
             </div>
           </div>
+        </div>
 
-          {/* Sign Out Button */}
-          <div className="sidebar-content w-full">
-            <Button
-              variant="outline"
-              onClick={() => signOut({ callbackUrl: '/' })}
-              className="w-full border-2 border-destructive/50 hover:border-destructive hover:bg-destructive/10 text-destructive font-semibold py-3 rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95"
-            >
-              Sign out
-            </Button>
-          </div>
+        {/* Sign Out Row */}
+        <div className="sidebar-row w-full px-4 py-4">
+          <Button
+            variant="outline"
+            onClick={() => signOut({ callbackUrl: '/' })}
+            className="w-full border-2 border-destructive/50 hover:border-destructive hover:bg-destructive/10 text-destructive font-semibold py-2 rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95"
+          >
+            Sign out
+          </Button>
         </div>
 
         {/* Decorative glow element */}
