@@ -204,13 +204,12 @@ export function DashboardClient() {
       <div
         className={`fixed right-0 bottom-0 w-64 md:hidden
           flex flex-col items-start justify-start
-          border-l border-border overflow-y-auto
+          border-l border-border overflow-y-auto bg-secondary dark:bg-card
           ${mobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'}
         `}
         style={{
           top: headerHeight,
           zIndex: 40,
-          backgroundColor: 'rgba(var(--background-rgb), 0.95)',
           transform: mobileMenuOpen ? 'translateX(0)' : 'translateX(100%)',
           opacity: mobileMenuOpen ? 1 : 0,
           transition: 'transform 500ms cubic-bezier(0.4, 0, 0.2, 1), opacity 500ms cubic-bezier(0.4, 0, 0.2, 1)',
