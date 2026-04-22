@@ -271,7 +271,7 @@ export function DashboardClient() {
             </Button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors mr-4"
+              className="p-2 rounded-lg hover:bg-secondary transition-colors -ml-2 mr-2"
               title={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             >
               {mobileMenuOpen ? (
