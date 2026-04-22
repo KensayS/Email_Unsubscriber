@@ -248,7 +248,7 @@ export function DashboardClient() {
       {/* Header */}
       <header ref={headerRef} className="border-b border-border dark:border-border bg-background dark:bg-card transition-colors duration-300 relative" style={{ zIndex: 40 }}>
         {/* Main Header Row */}
-        <div className="flex items-center gap-3 justify-between px-6 py-4 lg:px-8">
+        <div className="flex items-center gap-3 justify-between px-4 py-4 lg:px-8">
           <h1 className="font-bold text-xl text-[#1a1a1a] dark:text-[#e5e5e5] tracking-tight">📧 Email Unsubscriber</h1>
 
           {/* Desktop Controls */}
@@ -271,7 +271,7 @@ export function DashboardClient() {
             </Button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors"
+              className="p-2 rounded-lg hover:bg-secondary transition-colors ml-2"
               title={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             >
               {mobileMenuOpen ? (
