@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -20,6 +20,8 @@ export function DashboardClient() {
   const [error, setError] = useState<string>()
   const [unsubscribedCount, setUnsubscribedCount] = useState(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [headerHeight, setHeaderHeight] = useState(73)
+  const headerRef = useRef<HTMLElement>(null)
 
   const refreshUnsubscribedCount = useCallback(async () => {
     try {
@@ -35,6 +37,21 @@ export function DashboardClient() {
 
   useEffect(() => {
     refreshUnsubscribedCount()
+  }, [])
+
+  useEffect(() => {
+    const el = headerRef.current
+    if (!el) return
+
+    const observer = new ResizeObserver(() => {
+      setHeaderHeight(el.offsetHeight)
+    })
+    observer.observe(el)
+
+    // Set initial height
+    setHeaderHeight(el.offsetHeight)
+
+    return () => observer.disconnect()
   }, [])
 
   const handleScan = useCallback(async () => {
@@ -183,56 +200,28 @@ export function DashboardClient() {
       )}
 
       {/* Overlay Backdrop */}
-      {mobileMenuOpen && (
-        <div
-          className="fixed inset-0 md:hidden bg-black/50 transition-opacity duration-300"
-          onClick={() => setMobileMenuOpen(false)}
-          style={{ zIndex: 30 }}
-        />
-      )}
-
-      {/* Right Sidebar Menu - Glassmorphism with Rows Layout */}
       <div
-        className={`fixed right-0 top-[73px] bottom-0 w-64 md:hidden backdrop-blur-xl transition-transform duration-500 ease-out flex flex-col items-start justify-start border-l border-white/10 overflow-y-auto ${
-          mobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+        className={`fixed inset-0 md:hidden bg-black/50 transition-opacity duration-300 ${
+          mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
+        onClick={() => setMobileMenuOpen(false)}
+        style={{ zIndex: 30 }}
+      />
+
+      {/* Sidebar */}
+      <div
+        className={`fixed right-0 bottom-0 w-64 md:hidden backdrop-blur-xl
+          transition-all duration-500 ease-out flex flex-col items-start justify-start
+          border-l border-white/10 overflow-y-auto
+          ${mobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'}
+        `}
         style={{
+          top: headerHeight,
           zIndex: 40,
           background: 'rgba(255, 255, 255, 0.05)',
           backdropFilter: 'blur(20px)',
         }}
       >
-        <style>{`
-          @keyframes slideInGlass {
-            from {
-              transform: translateX(100%);
-              opacity: 0;
-            }
-            to {
-              transform: translateX(0);
-              opacity: 1;
-            }
-          }
-          @keyframes slideInRow {
-            from {
-              opacity: 0;
-              transform: translateX(20px);
-            }
-            to {
-              opacity: 1;
-              transform: translateX(0);
-            }
-          }
-          .sidebar-row {
-            animation: slideInRow 0.4s ease-out forwards;
-          }
-          .sidebar-row:nth-child(1) {
-            animation-delay: 0.1s;
-          }
-          .sidebar-row:nth-child(2) {
-            animation-delay: 0.2s;
-          }
-        `}</style>
 
         {/* Theme Row */}
         <div className="sidebar-row w-full px-4 py-3 border-b border-white/10 hover:bg-white/5 transition-colors">
@@ -265,7 +254,7 @@ export function DashboardClient() {
       </div>
 
       {/* Header */}
-      <header className="border-b border-border dark:border-border bg-background dark:bg-card transition-colors duration-300 relative" style={{ zIndex: 40 }}>
+      <header ref={headerRef} className="border-b border-border dark:border-border bg-background dark:bg-card transition-colors duration-300 relative" style={{ zIndex: 40 }}>
         {/* Main Header Row */}
         <div className="flex items-center gap-3 justify-between px-4 py-4 lg:px-8">
           <h1 className="font-bold text-xl text-[#1a1a1a] dark:text-[#e5e5e5] tracking-tight">📧 Email Unsubscriber</h1>
