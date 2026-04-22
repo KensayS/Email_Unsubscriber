@@ -202,11 +202,9 @@ export function DashboardClient() {
 
       {/* Sidebar */}
       <div
-        className={`fixed right-0 bottom-0 w-64 md:hidden
+        className="fixed right-0 bottom-0 w-64 md:hidden
           flex flex-col items-start justify-start
-          border-l border-border overflow-y-auto bg-secondary dark:bg-card
-          ${mobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'}
-        `}
+          border-l border-border overflow-y-auto bg-secondary dark:bg-card"
         style={{
           top: headerHeight,
           zIndex: 40,
