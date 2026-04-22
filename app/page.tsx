@@ -20,7 +20,7 @@ export default async function Home() {
           ✉ Stop Unwanted Emails
         </div>
         <h1 className="text-6xl md:text-7xl font-bold text-[#1a1a1a] dark:text-[#e5e5e5] tracking-tighter mb-4 leading-tight">
-          Reclaim Your<br className="hidden sm:block" />
+          Reclaim Your <br className="hidden sm:block" />
           Inbox
         </h1>
         <p className="text-[#737373] dark:text-[#a3a3a3] text-lg md:text-xl mb-10 leading-relaxed max-w-md mx-auto">
