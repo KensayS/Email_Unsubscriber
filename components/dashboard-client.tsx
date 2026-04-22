@@ -199,27 +199,22 @@ export function DashboardClient() {
         </div>
       )}
 
-      {/* Overlay Backdrop */}
-      <div
-        className={`fixed inset-0 md:hidden bg-black/50 transition-opacity duration-300 ${
-          mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={() => setMobileMenuOpen(false)}
-        style={{ zIndex: 30 }}
-      />
 
       {/* Sidebar */}
       <div
-        className={`fixed right-0 bottom-0 w-64 md:hidden backdrop-blur-xl
-          transition-all duration-500 ease-out flex flex-col items-start justify-start
-          border-l border-white/10 overflow-y-auto
+        className={`fixed right-0 bottom-0 w-64 md:hidden
+          flex flex-col items-start justify-start
+          border-l border-border overflow-y-auto
           ${mobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'}
         `}
         style={{
           top: headerHeight,
           zIndex: 40,
-          background: 'rgba(255, 255, 255, 0.05)',
-          backdropFilter: 'blur(20px)',
+          backgroundColor: 'rgba(var(--background-rgb), 0.95)',
+          transform: mobileMenuOpen ? 'translateX(0)' : 'translateX(100%)',
+          opacity: mobileMenuOpen ? 1 : 0,
+          transition: 'transform 500ms cubic-bezier(0.4, 0, 0.2, 1), opacity 500ms cubic-bezier(0.4, 0, 0.2, 1)',
+          pointerEvents: mobileMenuOpen ? 'auto' : 'none',
         }}
       >
 
